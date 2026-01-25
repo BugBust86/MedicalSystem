@@ -5,6 +5,9 @@ import lds.com.medicalsystem.common.DTO.InnerRegisterDTO;
 import lds.com.medicalsystem.common.DTO.StaffInformationDTO;
 import lds.com.medicalsystem.staff.doctor.entity.Doctor;
 import lds.com.medicalsystem.staff.doctor.mapper.DoctorMapper;
+import lds.com.medicalsystem.staff.labTech.entity.LabTech;
+import lds.com.medicalsystem.staff.labTech.mapper.LabTechMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -15,6 +18,8 @@ public class StaffServiceImp implements StaffService {
     public StaffServiceImp(DoctorMapper doctorMapper) {
         this.doctorMapper = doctorMapper;
     }
+    @Autowired
+    private LabTechMapper LabTechMapper;
 
     @Override
     public void staffRegister(InnerRegisterDTO dto) {
@@ -31,11 +36,16 @@ public class StaffServiceImp implements StaffService {
                 doctorMapper.insert(doctor);
                 break;
             case "化验员":
+                LabTech labTech = new LabTech();
+                labTech.setLabNo(dto.getStaffId());
+                labTech.setLabName(dto.getName());
+                labTech.setPassword(dto.getPassword());
+
                 // 插入LabTech表
+                LabTechMapper.insert(labTech);
                 break;
             case "管理员":
-                // 插入Admin表
-                break;
+                throw new IllegalArgumentException("无注册管理员账号权限，请联系后端工程师找回账号");
             default:
                 throw new IllegalArgumentException("不支持的角色: " + dto.getRole());
         }
