@@ -1,0 +1,29 @@
+#spring.application.name=MedicalSystem
+logging:
+  # 日志级别：root 是全局默认级别，这里设为 INFO 避免日志过多
+  level:
+    root: INFO
+    # 把你的 Mapper 包路径替换成实际路径，开启 DEBUG 才能看到 MyBatis 完整 SQL
+    lds.com.springbootmybatis.user.Mapper: DEBUG
+    # 可选：开启 Spring MVC 的 DEBUG 日志，能看到请求参数、响应状态
+    org.springframework.web: DEBUG
+  # 日志格式：带颜色、显示线程名和类名，方便开发时快速定位
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/medical_db
+    username: root
+    password: 123456
+
+
+mybatis:
+  configuration:
+    # log-impl: org.apache.ibatis.logging.stdout.StdOutImpl 指定 MyBatis 把日志输出到控制台，但不会自动打印 SQL 执行的详细耗时和返回行数。
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    # 驼峰命名自动匹配数据库命名的配置，默认false，
+    map-underscore-to-camel-case: true

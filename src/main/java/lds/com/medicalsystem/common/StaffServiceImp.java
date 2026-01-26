@@ -25,6 +25,7 @@ public class StaffServiceImp implements StaffService {
     public void staffRegister(InnerRegisterDTO dto) {
         // 若有工具类先对传入controller层的密码加密，这里需要先进行解码
 
+        //查询工号在数据库是否存在，如果不存在抛出该员工不存在的异常
         switch (dto.getRole()) {
             case "医生":
                 Doctor doctor = new Doctor();

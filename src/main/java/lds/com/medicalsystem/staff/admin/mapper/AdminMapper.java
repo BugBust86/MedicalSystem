@@ -1,5 +1,6 @@
 package lds.com.medicalsystem.staff.admin.mapper;
 
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 

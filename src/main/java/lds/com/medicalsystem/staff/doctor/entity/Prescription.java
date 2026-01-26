@@ -1,11 +1,11 @@
 package lds.com.medicalsystem.staff.doctor.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+
 import lombok.Data;
 
 // 处方类
 @Data
-@TableName("prescription")
+
 public class Prescription {
     // 主键
     private String prescriptionId;

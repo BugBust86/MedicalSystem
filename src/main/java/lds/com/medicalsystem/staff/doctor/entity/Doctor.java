@@ -1,10 +1,10 @@
 package lds.com.medicalsystem.staff.doctor.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+
 import lombok.Data;
 
 @Data
-@TableName("doctor")
+
 public class Doctor {
     private String doctorNo;
     private String doctorName;
