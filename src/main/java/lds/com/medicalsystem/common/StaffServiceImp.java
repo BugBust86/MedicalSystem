@@ -8,7 +8,6 @@ import lds.com.medicalsystem.staff.doctor.entity.Doctor;
 import lds.com.medicalsystem.staff.doctor.mapper.DoctorMapper;
 import lds.com.medicalsystem.staff.labTech.entity.LabTech;
 import lds.com.medicalsystem.staff.labTech.mapper.LabTechMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -22,6 +21,7 @@ public class StaffServiceImp implements StaffService {
         this.LabTechMapper = LabTechMapper;
     }
 
+    // 医生、化验员注册\修改密码，输入工号、姓名、手机号、验证码（模拟），前端再传入role
     @Override
     public void staffRegisterBySelf(InnerRegisterDTO dto) {
         // 若有工具类先对传入controller层的密码加密，这里需要先进行解码
@@ -29,7 +29,7 @@ public class StaffServiceImp implements StaffService {
 
         switch (dto.getRole()) {
             case "医生":
-                // 判断工号是否存在，不存在抛出BusinessException(“工号不存在，请联系管理员申请”)
+                // 获取表中现有的该化验员信息，与前端传入的一一对比，对比姓名和绑定的手机号
                 Doctor d = doctorMapper.selectDoctorByNo(dto.getStaffId());
                 if(d==null){
                     throw new BusinessException("工号不存在，请联系管理员申请");
@@ -38,13 +38,16 @@ public class StaffServiceImp implements StaffService {
                 if(!d.getDoctorName().equals(dto.getName())){
                     throw new BusinessException("非法操作，请输入正确的工号或姓名");
                 }
-                // 工号存在，且姓名与工号对应，说明科室、职称、头像等其他信息也被管理员注册好了，只需注册密码
-                d.setPassword(dto.getPassword());
+                // 校验手机号是否绑定
+                if(!d.getPhone().equals(dto.getPhone())){
+                    throw new BusinessException("该手机号未绑定，请输入已绑定该工号的手机号");
+                }
 
-                // d包含管理员原来注册的信息，又新增了密码，可以插入Doctor表
-                doctorMapper.insert(d);
+                // 校验完成，可将 前端传入dto的工号、密码参数传进sql语句，执行修改
+                doctorMapper.doctorUpdate(d.getDoctorNo(),d.getPassword());
                 break;
             case "化验员":
+                // 获取表中现有的该化验员信息，与前端传入的一一对比，对比姓名和绑定的手机号
                 LabTech lab = LabTechMapper.selectLabTechByNo(dto.getStaffId());
                 if(lab==null){
                     throw new BusinessException("工号不存在，请联系管理员申请");
@@ -52,10 +55,12 @@ public class StaffServiceImp implements StaffService {
                 if(!lab.getLabName().equals(dto.getName())){
                     throw new BusinessException("非法操作，请输入正确的工号或姓名");
                 }
-                lab.setPassword(dto.getPassword());
+                if(!lab.getPhone().equals(dto.getPhone())){
+                    throw new BusinessException("该手机号未绑定，请输入已绑定该工号的手机号");
+                }
 
-                // 插入LabTech表
-                LabTechMapper.insert(lab);
+                // 校验完成，可将 前端传入dto的工号、密码参数传进sql语句，执行修改
+                LabTechMapper.labUpdate(dto.getStaffId(), dto.getPassword());
                 break;
             case "管理员":
                 throw new IllegalArgumentException("无注册管理员账号权限，请联系后端工程师找回账号");
@@ -63,10 +68,12 @@ public class StaffServiceImp implements StaffService {
                 throw new IllegalArgumentException("不支持的角色: " + dto.getRole());
         }
     }
+    // 员工登录
     @Override
     public String staffLogin(InnerLoginDTO innerLoginDTO) {
         return null;
     }
+    // 查看个人中心
     @Override
     public StaffInformationDTO staffInfo(InnerLoginDTO innerLoginDTO, String token) {
         return null;

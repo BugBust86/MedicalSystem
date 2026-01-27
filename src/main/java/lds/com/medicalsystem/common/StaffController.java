@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@Validated    // @Validated会对参数、类等内部所有带有校验注解（如 @NotBlank、@NotNull、@Size）的字段进行校验
+// @Validated会对参数、类等内部所有带有校验注解（如 @NotBlank、@NotNull、@Size）的字段进行校验
 @RequestMapping("/staff")     // 接口公共的最初请求路径
 public class StaffController {
     private final StaffService staffService;
@@ -19,9 +19,9 @@ public class StaffController {
 
     // 员工注册自己已有账号的密码
     @PostMapping("/registerBySelf")
-    public Result<Void> staffRegisterBySelf(@RequestBody InnerRegisterDTO dto) {
+    public ResultVO<Void> staffRegisterBySelf(@Validated @RequestBody InnerRegisterDTO dto) {
         staffService.staffRegisterBySelf(dto);
-        return Result.success("注册成功");
+        return ResultVO.success("注册成功");
     }
 
 }

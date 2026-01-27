@@ -14,6 +14,10 @@ public class InnerRegisterDTO {
     private String name;
     @NotBlank
     private String password;
+    // 新增传入手机号，保证安全性，仅有验证码确认后才能注册密码、修改密码
+    @NotBlank
+    private String phone;
     // controller层接收统一的DTO，service层再根据role分发处理
+    @NotBlank
     private String role;
 }
