@@ -20,11 +20,12 @@
 
 StaffController类：
 
-post:   ├── /staff                    # 根路径
-│   ├── /registBySelf              # 医生、化验员注册自己已有账号的密码，管理员账号不能注册，只能由工程师提前插入
-│   ├──                    #
-│   ├──            #
-│   └──
+post:
+ /staff                    # 根路径
+    /registBySelf              # 医生、化验员注册自己已有账号的密码，管理员账号不能注册，只能由工程师提前插入
+                   #
+            #
+
 
 ##### 医生层：
 
@@ -32,11 +33,11 @@ post:   ├── /staff                    # 根路径
 
 AdminController类：
 
-post:   ├── /admin                # 根路径
-│   ├── /registerByAdmin/doctor               #医生注册自己已有账号的密码
-│   ├── /registerByAdmin/labTech             #化验员注册自己已有账号的密码
-│   ├──            #
-│   └──
+post:   
+ /admin                # 根路径
+     /registerByAdmin/doctor               #管理员注册医生账号
+     /registerByAdmin/labTech             #管理员注册化验员账号
+          #
 
 ##### 化验员层：
 

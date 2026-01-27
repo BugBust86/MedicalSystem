@@ -22,8 +22,8 @@ public class AdminServiceImp implements AdminService{
     public void doctorRegisterByAdmin(AdminRegisterDoctorDTO dto) {
         // 先检查工号是否已存在
         Doctor d = adminMapper.selectDoctorByNo(dto.getDoctorNo());
-        // 若这个医生的工号不存在，则可以执行注册操作，否则报错“该工号已存在”
-        if(d == null){
+        // 如果工号不为空，说明这个工号被占用了，报错已存在，若没问题，继续执行后续操作
+        if(d != null){
             throw new BusinessException("该工号已存在");
         }
         try {
@@ -42,8 +42,8 @@ public class AdminServiceImp implements AdminService{
     public void labTechRegisterByAdmin(AdminRegisterLabDTO dto) {
         // 先检查工号是否已存在
         LabTech l = adminMapper.selectLabTechByNo(dto.getLabNo());
-        // 若这个化验员工号不存在，则可以执行注册操作，否则报错“该工号已存在”
-        if(l == null){
+        // 如果工号不为空，说明这个工号被占用了，报错已存在，若没问题，继续执行后续操作
+        if(l != null){
             throw new BusinessException("该工号已存在");
         }
         try {

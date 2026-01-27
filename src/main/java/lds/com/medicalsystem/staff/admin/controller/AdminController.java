@@ -19,7 +19,7 @@ public class AdminController {
     }
 
     // 管理员注册医生账号(不包含密码)
-        @PostMapping("/registerByAdmin/doctor")
+    @PostMapping("/registerByAdmin/doctor")
     public Result<Void> doctorRegisterByAdmin(@RequestBody AdminRegisterDoctorDTO dto) {
         // findById判断工号是否存在，不存在抛出BusinessException(“工号不存在，请联系管理员申请”)
         adminService.doctorRegisterByAdmin(dto);

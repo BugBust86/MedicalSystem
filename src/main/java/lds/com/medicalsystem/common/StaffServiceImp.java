@@ -16,11 +16,11 @@ import org.springframework.stereotype.Service;
 public class StaffServiceImp implements StaffService {
     // 注入Mapper，代替@Autowired的写法
     private final DoctorMapper doctorMapper;
-    public StaffServiceImp(DoctorMapper doctorMapper) {
+    private final LabTechMapper LabTechMapper;
+    public StaffServiceImp(DoctorMapper doctorMapper, LabTechMapper LabTechMapper) {
         this.doctorMapper = doctorMapper;
+        this.LabTechMapper = LabTechMapper;
     }
-    @Autowired
-    private LabTechMapper LabTechMapper;
 
     @Override
     public void staffRegisterBySelf(InnerRegisterDTO dto) {
@@ -34,7 +34,11 @@ public class StaffServiceImp implements StaffService {
                 if(d==null){
                     throw new BusinessException("工号不存在，请联系管理员申请");
                 }
-                // 工号存在，说明姓名等其他信息也被管理员注册好了，只需注册密码
+                // 工号存在，校验工号对应的名字和前端传入的名字是否相等，不相等抛出BusinessException(“非法操作，请输入正确的工号或姓名”)
+                if(!d.getDoctorName().equals(dto.getName())){
+                    throw new BusinessException("非法操作，请输入正确的工号或姓名");
+                }
+                // 工号存在，且姓名与工号对应，说明科室、职称、头像等其他信息也被管理员注册好了，只需注册密码
                 d.setPassword(dto.getPassword());
 
                 // d包含管理员原来注册的信息，又新增了密码，可以插入Doctor表
@@ -44,6 +48,9 @@ public class StaffServiceImp implements StaffService {
                 LabTech lab = LabTechMapper.selectLabTechByNo(dto.getStaffId());
                 if(lab==null){
                     throw new BusinessException("工号不存在，请联系管理员申请");
+                }
+                if(!lab.getLabName().equals(dto.getName())){
+                    throw new BusinessException("非法操作，请输入正确的工号或姓名");
                 }
                 lab.setPassword(dto.getPassword());
 
