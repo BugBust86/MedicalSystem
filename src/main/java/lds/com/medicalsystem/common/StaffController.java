@@ -10,16 +10,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Validated    // @Validated会对参数、类等内部所有带有校验注解（如 @NotBlank、@NotNull、@Size）的字段进行校验
-@RequestMapping("/api")     // 接口公共的最初请求路径
+@RequestMapping("/staff")     // 接口公共的最初请求路径
 public class StaffController {
     private final StaffService staffService;
     public StaffController(StaffService staffService) {
         this.staffService = staffService;
     }
 
-    @PostMapping("/staff/register")
-    public Result<Void> staffRegister(@RequestBody InnerRegisterDTO dto) {
-        staffService.staffRegister(dto);
+    // 员工注册自己已有账号的密码
+    @PostMapping("/registerBySelf")
+    public Result<Void> staffRegisterBySelf(@RequestBody InnerRegisterDTO dto) {
+        staffService.staffRegisterBySelf(dto);
         return Result.success("注册成功");
     }
+
 }

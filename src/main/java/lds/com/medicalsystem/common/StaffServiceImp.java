@@ -3,6 +3,7 @@ package lds.com.medicalsystem.common;
 import lds.com.medicalsystem.common.DTO.InnerLoginDTO;
 import lds.com.medicalsystem.common.DTO.InnerRegisterDTO;
 import lds.com.medicalsystem.common.DTO.StaffInformationDTO;
+import lds.com.medicalsystem.common.exception.BusinessException;
 import lds.com.medicalsystem.staff.doctor.entity.Doctor;
 import lds.com.medicalsystem.staff.doctor.mapper.DoctorMapper;
 import lds.com.medicalsystem.staff.labTech.entity.LabTech;
@@ -22,28 +23,32 @@ public class StaffServiceImp implements StaffService {
     private LabTechMapper LabTechMapper;
 
     @Override
-    public void staffRegister(InnerRegisterDTO dto) {
+    public void staffRegisterBySelf(InnerRegisterDTO dto) {
         // 若有工具类先对传入controller层的密码加密，这里需要先进行解码
 
-        //查询工号在数据库是否存在，如果不存在抛出该员工不存在的异常
+
         switch (dto.getRole()) {
             case "医生":
-                Doctor doctor = new Doctor();
-                doctor.setDoctorNo(dto.getStaffId());
-                doctor.setDoctorName(dto.getName());
-                doctor.setPassword(dto.getPassword());
+                // 判断工号是否存在，不存在抛出BusinessException(“工号不存在，请联系管理员申请”)
+                Doctor d = doctorMapper.selectDoctorByNo(dto.getStaffId());
+                if(d==null){
+                    throw new BusinessException("工号不存在，请联系管理员申请");
+                }
+                // 工号存在，说明姓名等其他信息也被管理员注册好了，只需注册密码
+                d.setPassword(dto.getPassword());
 
-                // 插入Doctor表
-                doctorMapper.insert(doctor);
+                // d包含管理员原来注册的信息，又新增了密码，可以插入Doctor表
+                doctorMapper.insert(d);
                 break;
             case "化验员":
-                LabTech labTech = new LabTech();
-                labTech.setLabNo(dto.getStaffId());
-                labTech.setLabName(dto.getName());
-                labTech.setPassword(dto.getPassword());
+                LabTech lab = LabTechMapper.selectLabTechByNo(dto.getStaffId());
+                if(lab==null){
+                    throw new BusinessException("工号不存在，请联系管理员申请");
+                }
+                lab.setPassword(dto.getPassword());
 
                 // 插入LabTech表
-                LabTechMapper.insert(labTech);
+                LabTechMapper.insert(lab);
                 break;
             case "管理员":
                 throw new IllegalArgumentException("无注册管理员账号权限，请联系后端工程师找回账号");
