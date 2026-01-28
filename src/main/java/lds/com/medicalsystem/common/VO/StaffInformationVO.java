@@ -1,10 +1,10 @@
-package lds.com.medicalsystem.common.DTO;
+package lds.com.medicalsystem.common.VO;
 
 import lombok.Data;
 
-// 查看个人信息时返回的对象
+// 查看个人信息时返回给前端的对象
 @Data
-public class StaffInformationDTO {
+public class StaffInformationVO {
     // 前端显示头像
     private String pic;
     // 前端显示工号

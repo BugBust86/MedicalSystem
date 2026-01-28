@@ -2,7 +2,7 @@ package lds.com.medicalsystem.common;
 
 import lds.com.medicalsystem.common.DTO.InnerLoginDTO;
 import lds.com.medicalsystem.common.DTO.InnerRegisterDTO;
-import lds.com.medicalsystem.common.DTO.StaffInformationDTO;
+import lds.com.medicalsystem.common.VO.StaffInformationVO;
 import lds.com.medicalsystem.common.exception.BusinessException;
 import lds.com.medicalsystem.staff.doctor.entity.Doctor;
 import lds.com.medicalsystem.staff.doctor.mapper.DoctorMapper;
@@ -75,7 +75,7 @@ public class StaffServiceImp implements StaffService {
     }
     // 查看个人中心
     @Override
-    public StaffInformationDTO staffInfo(InnerLoginDTO innerLoginDTO, String token) {
+    public StaffInformationVO staffInfo(InnerLoginDTO innerLoginDTO, String token) {
         return null;
     }
 }

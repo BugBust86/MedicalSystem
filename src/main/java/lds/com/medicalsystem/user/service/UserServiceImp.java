@@ -1,10 +1,15 @@
 package lds.com.medicalsystem.user.service;
 
+import lds.com.medicalsystem.common.ResultVO;
 import lds.com.medicalsystem.common.exception.BusinessException;
+import lds.com.medicalsystem.common.utils.JWTUtil;
 import lds.com.medicalsystem.user.entity.MedicalCard;
 import lds.com.medicalsystem.user.entity.User;
 import lds.com.medicalsystem.user.mapper.UserMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserServiceImp implements UserService{
@@ -14,8 +19,9 @@ public class UserServiceImp implements UserService{
     }
     @Override
     public void register(String phone, String password) {
-        User u = userMapper.checkPhoneExists(phone);
-        if(u!=null){
+        Boolean isTrue = userMapper.checkPhoneExists(phone);
+        // 手机号存在返回true，if语句抛出已注册的异常
+        if(isTrue){
             throw new BusinessException("该手机号已注册");
         }
         try {
@@ -27,8 +33,25 @@ public class UserServiceImp implements UserService{
             throw new BusinessException("手机号为["+phone+"]的用户注册失败,底层执行异常", e);
         }
     }
+    @Override
+    public ResultVO<String> login(String phone,String password){
+        Boolean isTrue = userMapper.checkPhoneExists(phone);
+        if(!isTrue){
+            // 手机号不存在，请先注册
+            throw new BusinessException("手机号不存在，请先注册");
+        }
+        String psw = userMapper.userLoginSelect(phone);
+        if(psw.equals(password)){
+            Map<String,Object> claims = new HashMap<>();
+            claims.put("phone",phone);
+            String token = JWTUtil.genToke(claims);
+            return ResultVO.success("登录成功",token);
+        }
+        return ResultVO.error("密码错误,登录失败");
+    }
+    @Override
     public void addMedicalCard(MedicalCard mc) {
-        // 调用Mapper层添加就诊卡
+        // 调用Mapper层添加就诊卡,一个患者可以被多个亲属注册患者卡，所以不用校验身份证是否被注册就诊卡
         int num = userMapper.addMedicalCard(mc);
         if (num == 0){
             throw new BusinessException("添加就诊卡失败");
