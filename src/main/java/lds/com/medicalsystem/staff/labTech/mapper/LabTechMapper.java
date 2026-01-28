@@ -1,6 +1,6 @@
 package lds.com.medicalsystem.staff.labTech.mapper;
 
-import lds.com.medicalsystem.common.CommonMapper;
+import lds.com.medicalsystem.common.MVC.CommonMapper;
 import org.apache.ibatis.annotations.Update;
 
 // 化验员业务的mapper层，公共区（common包）和化验员区（labTech包）的service层可以调用

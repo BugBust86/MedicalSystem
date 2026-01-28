@@ -1,7 +1,7 @@
 package lds.com.medicalsystem.staff.admin.mapper;
 
 
-import lds.com.medicalsystem.common.CommonMapper;
+import lds.com.medicalsystem.common.MVC.CommonMapper;
 import lds.com.medicalsystem.staff.admin.DTO.AdminRegisterDoctorDTO;
 import lds.com.medicalsystem.staff.admin.DTO.AdminRegisterLabDTO;
 import org.apache.ibatis.annotations.Insert;

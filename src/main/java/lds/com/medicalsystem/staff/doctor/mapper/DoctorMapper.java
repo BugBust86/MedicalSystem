@@ -1,7 +1,6 @@
 package lds.com.medicalsystem.staff.doctor.mapper;
 
-import lds.com.medicalsystem.common.CommonMapper;
-import lds.com.medicalsystem.staff.doctor.entity.Doctor;
+import lds.com.medicalsystem.common.MVC.CommonMapper;
 import org.apache.ibatis.annotations.Update;
 
 // 医生相关业务的mapper层，Doctor区和公共区的service可以调用

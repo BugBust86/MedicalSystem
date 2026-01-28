@@ -1,10 +1,9 @@
 package lds.com.medicalsystem.user.service;
 
-import lds.com.medicalsystem.common.ResultVO;
+import lds.com.medicalsystem.common.VO.ResultVO;
 import lds.com.medicalsystem.common.exception.BusinessException;
 import lds.com.medicalsystem.common.utils.JWTUtil;
 import lds.com.medicalsystem.user.entity.MedicalCard;
-import lds.com.medicalsystem.user.entity.User;
 import lds.com.medicalsystem.user.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 

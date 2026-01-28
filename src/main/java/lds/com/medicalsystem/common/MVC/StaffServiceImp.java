@@ -1,4 +1,4 @@
-package lds.com.medicalsystem.common;
+package lds.com.medicalsystem.common.MVC;
 
 import lds.com.medicalsystem.common.DTO.InnerLoginDTO;
 import lds.com.medicalsystem.common.DTO.InnerRegisterDTO;

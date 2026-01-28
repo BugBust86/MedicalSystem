@@ -1,4 +1,4 @@
-package lds.com.medicalsystem.common;
+package lds.com.medicalsystem.common.VO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

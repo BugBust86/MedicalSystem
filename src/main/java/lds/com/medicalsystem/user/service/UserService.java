@@ -1,6 +1,6 @@
 package lds.com.medicalsystem.user.service;
 
-import lds.com.medicalsystem.common.ResultVO;
+import lds.com.medicalsystem.common.VO.ResultVO;
 import lds.com.medicalsystem.user.entity.MedicalCard;
 
 public interface UserService {

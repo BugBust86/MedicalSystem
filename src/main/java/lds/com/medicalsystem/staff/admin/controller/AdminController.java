@@ -1,6 +1,6 @@
 package lds.com.medicalsystem.staff.admin.controller;
 
-import lds.com.medicalsystem.common.ResultVO;
+import lds.com.medicalsystem.common.VO.ResultVO;
 import lds.com.medicalsystem.staff.admin.DTO.AdminRegisterDoctorDTO;
 import lds.com.medicalsystem.staff.admin.DTO.AdminRegisterLabDTO;
 import lds.com.medicalsystem.staff.admin.service.AdminService;

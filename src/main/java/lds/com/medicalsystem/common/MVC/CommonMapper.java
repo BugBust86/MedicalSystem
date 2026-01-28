@@ -1,4 +1,4 @@
-package lds.com.medicalsystem.common;
+package lds.com.medicalsystem.common.MVC;
 
 import lds.com.medicalsystem.staff.doctor.entity.Doctor;
 import lds.com.medicalsystem.staff.labTech.entity.LabTech;

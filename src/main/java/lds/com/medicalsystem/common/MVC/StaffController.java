@@ -1,6 +1,7 @@
-package lds.com.medicalsystem.common;
+package lds.com.medicalsystem.common.MVC;
 
 import lds.com.medicalsystem.common.DTO.InnerRegisterDTO;
+import lds.com.medicalsystem.common.VO.ResultVO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
