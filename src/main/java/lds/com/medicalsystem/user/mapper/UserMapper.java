@@ -14,7 +14,7 @@ public interface UserMapper {
     @Insert("insert into users(phone, password) VALUES(#{phone},#{psw}) ")
     // @Param注解让Mybatis区分多个参数的对应关系
     int userRegister(@Param("phone") String phone, @Param("psw") String psw);
-    // 用户登录，根据手机号查用户对象，Token的负载部分装用户手机号
+    // 用户登录，根据手机号查密码，Token的负载部分装用户手机号
     @Select("select password from users where phone = #{phone}")
     String userLoginSelect(String phone);
 

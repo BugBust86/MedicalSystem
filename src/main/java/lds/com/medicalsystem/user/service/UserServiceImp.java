@@ -2,6 +2,8 @@ package lds.com.medicalsystem.user.service;
 
 import lds.com.medicalsystem.common.VO.ResultVO;
 import lds.com.medicalsystem.common.exception.BusinessException;
+import lds.com.medicalsystem.common.exception.ValidationException;
+import lds.com.medicalsystem.common.utils.IdCardValidator;
 import lds.com.medicalsystem.common.utils.JWTUtil;
 import lds.com.medicalsystem.user.entity.MedicalCard;
 import lds.com.medicalsystem.user.mapper.UserMapper;
@@ -46,10 +48,13 @@ public class UserServiceImp implements UserService{
             String token = JWTUtil.genToke(claims);
             return ResultVO.success("登录成功",token);
         }
+        System.out.println(psw);    // 如果登录失败打印控制台判断原因
+        System.out.println(password);
         return ResultVO.error("密码错误,登录失败");
     }
     @Override
     public void addMedicalCard(MedicalCard mc) {
+
         // 调用Mapper层添加就诊卡,一个患者可以被多个亲属注册患者卡，所以不用校验身份证是否被注册就诊卡
         int num = userMapper.addMedicalCard(mc);
         if (num == 0){

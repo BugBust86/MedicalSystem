@@ -20,6 +20,8 @@ public interface AdminMapper extends CommonMapper {
     @Insert("insert into lab_tech(lab_no, lab_name, lab_pic) values(#{labNo},#{labName},#{pic})")
     int insertLabTech(AdminRegisterLabDTO dto);
 
+    //
+
     // 传入工号，修改管理员账号的密码
     @Update("update admin set password=#{newPsw} where admin_no=#{adminNo}")
     void update(String adminNo, String newPsw);

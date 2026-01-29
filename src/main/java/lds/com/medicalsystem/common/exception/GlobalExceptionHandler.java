@@ -9,14 +9,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 // Lombok的@Slf4j注解会在编译阶段自动为类生成日志对象的代码
 @Slf4j
-// 全局异常处理器，捕获测试时出现的所有异常
+// 全局异常处理器，把抛的异常全部捕获并以正确的ResultVO格式返回给前端
+// 全局捕获所有@RestController/@Controller的异常，返回JSON格式ResultVO
 public class GlobalExceptionHandler {
     // 处理业务异常
     @ExceptionHandler(BusinessException.class)
     public ResultVO<Void> handleBusinessException(BusinessException e) {
-//        log.warn("业务异常：{}",e.getMessage());
-//        return Result.error(e.getMessage());
-        // 如果e.gerCause()返回的原因不为空（有底层异常），用 error 级别打印完整堆栈
         if (e.getCause () != null) {
             log.error ("业务异常: {}", e.getMessage (), e.getCause ());
         } else {

@@ -2,6 +2,8 @@ package lds.com.medicalsystem.user.entity;
 
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lds.com.medicalsystem.common.utils.ValidIdCard;
 import lombok.Data;
 
 // 就诊卡
@@ -13,6 +15,7 @@ public class MedicalCard {
     @NotBlank
     private String patientName;
     @NotBlank
+    @ValidIdCard
     // 身份证号
     private String idNumber;
     // 设为枚举类，1为男，0为女，数据库存int，前端收到1渲染成男，2渲染成女
@@ -20,7 +23,7 @@ public class MedicalCard {
     private GenderType gender;
     // 表对应类型为tinyint
     private int age;
-    @NotBlank
+    @NotNull
     private RelationType relationship;
     @NotBlank
     private String contactPhone;

@@ -1,5 +1,6 @@
 package lds.com.medicalsystem.common.MVC;
 
+import lds.com.medicalsystem.common.DTO.InnerLoginDTO;
 import lds.com.medicalsystem.common.DTO.InnerRegisterDTO;
 import lds.com.medicalsystem.common.VO.ResultVO;
 import org.springframework.validation.annotation.Validated;
@@ -25,4 +26,9 @@ public class StaffController {
         return ResultVO.success("注册成功");
     }
 
+    // 员工登录自己已有账号
+    @PostMapping("/staffLogin")
+    public ResultVO<String> staffLogin(@RequestBody InnerLoginDTO dto){
+        return staffService.staffLogin(dto);
+    }
 }

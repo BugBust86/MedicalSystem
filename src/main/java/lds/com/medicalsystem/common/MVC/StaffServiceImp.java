@@ -2,23 +2,33 @@ package lds.com.medicalsystem.common.MVC;
 
 import lds.com.medicalsystem.common.DTO.InnerLoginDTO;
 import lds.com.medicalsystem.common.DTO.InnerRegisterDTO;
+import lds.com.medicalsystem.common.VO.ResultVO;
 import lds.com.medicalsystem.common.VO.StaffInformationVO;
 import lds.com.medicalsystem.common.exception.BusinessException;
+import lds.com.medicalsystem.common.utils.JWTUtil;
+import lds.com.medicalsystem.staff.admin.entity.Admin;
+import lds.com.medicalsystem.staff.admin.mapper.AdminMapper;
 import lds.com.medicalsystem.staff.doctor.entity.Doctor;
 import lds.com.medicalsystem.staff.doctor.mapper.DoctorMapper;
 import lds.com.medicalsystem.staff.labTech.entity.LabTech;
 import lds.com.medicalsystem.staff.labTech.mapper.LabTechMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Service
 public class StaffServiceImp implements StaffService {
     // 注入Mapper，代替@Autowired的写法
     private final DoctorMapper doctorMapper;
-    private final LabTechMapper LabTechMapper;
-    public StaffServiceImp(DoctorMapper doctorMapper, LabTechMapper LabTechMapper) {
-        this.doctorMapper = doctorMapper;
-        this.LabTechMapper = LabTechMapper;
+    private final LabTechMapper labTechMapper;
+    private final AdminMapper adminMapper;
+    public StaffServiceImp(DoctorMapper dM, LabTechMapper lM, AdminMapper aM) {
+        this.doctorMapper = dM;
+        this.labTechMapper = lM;
+        this.adminMapper = aM;
     }
 
     // 医生、化验员注册\修改密码，输入工号、姓名、手机号、验证码（模拟），前端再传入role
@@ -44,11 +54,11 @@ public class StaffServiceImp implements StaffService {
                 }
 
                 // 校验完成，可将 前端传入dto的工号、密码参数传进sql语句，执行修改
-                doctorMapper.doctorUpdate(d.getDoctorNo(),d.getPassword());
+                doctorMapper.doctorUpdate(dto.getStaffId(),dto.getPassword());
                 break;
             case "化验员":
                 // 获取表中现有的该化验员信息，与前端传入的一一对比，对比姓名和绑定的手机号
-                LabTech lab = LabTechMapper.selectLabTechByNo(dto.getStaffId());
+                LabTech lab = labTechMapper.selectLabTechByNo(dto.getStaffId());
                 if(lab==null){
                     throw new BusinessException("工号不存在，请联系管理员申请");
                 }
@@ -60,18 +70,63 @@ public class StaffServiceImp implements StaffService {
                 }
 
                 // 校验完成，可将 前端传入dto的工号、密码参数传进sql语句，执行修改
-                LabTechMapper.labUpdate(dto.getStaffId(), dto.getPassword());
+                labTechMapper.labUpdate(dto.getStaffId(), dto.getPassword());
                 break;
             case "管理员":
                 throw new IllegalArgumentException("无注册管理员账号权限，请联系后端工程师找回账号");
-            default:
-                throw new IllegalArgumentException("不支持的角色: " + dto.getRole());
         }
     }
     // 员工登录
     @Override
-    public String staffLogin(InnerLoginDTO innerLoginDTO) {
-        return null;
+    public ResultVO<String> staffLogin(InnerLoginDTO dto) {
+        switch (dto.getRole()) {
+            case "医生":
+                // 获取表中现有的该医生信息
+                Doctor d = doctorMapper.selectDoctorByNo(dto.getStaffId());
+                if(d==null){
+                    throw new BusinessException("工号不存在，请联系管理员申请");
+                }
+                // 工号存在，检验密码是否存在，防止输入空
+                if(d.getPassword()==null){
+                    return ResultVO.error("未注册密码，请先注册"); //该处抛业务异常也可以，全局处理器会打包成ResultVO格式的json对象
+                }
+                if(!d.getPassword().equals(dto.getPassword())){     // 密码不相等
+                    return ResultVO.error("工号或密码错误");
+                }
+                Map<String,Object> information1 = new HashMap<>();
+                information1.put("工号",dto.getStaffId());
+                String token1 = JWTUtil.genToke(information1);
+                return ResultVO.success("登录成功",token1);
+            case "化验员":
+                // 获取表中现有的该化验员信息，与前端传入的一一对比，对比姓名和绑定的手机号
+                LabTech labTech = labTechMapper.selectLabTechByNo(dto.getStaffId());
+                if(labTech==null){
+                    throw new BusinessException("工号不存在，请联系管理员申请");
+                }
+                if(labTech.getPassword()==null){
+                    return ResultVO.error("未注册密码，请先注册");
+                }
+                if(!labTech.getPassword().equals(dto.getPassword())){
+                    return ResultVO.error("工号或密码错误");
+                }
+                Map<String,Object> information2 = new HashMap<>();
+                information2.put("工号",dto.getStaffId());
+                String token2 = JWTUtil.genToke(information2);
+                return ResultVO.success("登录成功",token2);
+            case "管理员":
+                Admin admin = adminMapper.selectAdminByNo(dto.getStaffId());
+                if(admin==null){
+                    return ResultVO.error("工号输入错误");
+                }
+                if(!admin.getPassword().equals(dto.getPassword())){
+                    return ResultVO.error("密码输入错误");
+                }
+                Map<String,Object> information3 = new HashMap<>();
+                information3.put("工号",dto.getStaffId());
+                String token3 = JWTUtil.genToke(information3);
+                return ResultVO.success("登录成功",token3);
+        }
+        return ResultVO.error("非法角色");
     }
     // 查看个人中心
     @Override

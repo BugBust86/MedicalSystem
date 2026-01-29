@@ -2,13 +2,10 @@ package lds.com.medicalsystem.user.controller;
 
 import jakarta.validation.constraints.Pattern;
 import lds.com.medicalsystem.common.VO.ResultVO;
-import lds.com.medicalsystem.common.utils.JWTUtil;
 import lds.com.medicalsystem.user.entity.MedicalCard;
 import lds.com.medicalsystem.user.service.UserService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -32,15 +29,14 @@ public class UserRegisterLogin {
     // 用户通过手机号登录,手机号+密码
     @PostMapping("/login")
     public ResultVO<String> login(@Pattern(regexp = "^\\d{11}$") String phone,
-                                  @Pattern(regexp = "^\\s{5,16}$") String psw) {
-        return userService.login(phone,psw);
+                                  @Pattern(regexp = "^\\d{5,16}$") String password) {
+        return userService.login(phone, password);
     }
 
     // 用户添加就诊卡,请求头传Token，请求体传json对象
     @PostMapping("/addMedicalCard")
-    public ResultVO<Void> addCard( MedicalCard mc) {
-        // 不用做Token校验，已经设置添加了全局的拦截器，
-        // 除/user/register和/user/login外的所有api都需要在请求头设置正确的Token
+    public ResultVO<Void> addCard(@Validated @RequestBody MedicalCard mc) {
+        // 不用做Token校验，已经设置添加了全局的拦截器，除/user/register和/user/login外的所有api都需要在请求头设置Token
 
         userService.addMedicalCard(mc);
         return ResultVO.success("添加成功");
