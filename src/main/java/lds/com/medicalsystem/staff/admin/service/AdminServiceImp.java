@@ -21,7 +21,7 @@ public class AdminServiceImp implements AdminService{
     @Override
     public void doctorRegisterByAdmin(AdminRegisterDoctorDTO dto) {
         // 先检查工号是否已存在
-        Doctor d = adminMapper.selectDoctorByNo(dto.getDoctorNo());
+        Doctor d = adminMapper.  selectDoctorByNo(dto.getDoctorNo());
         // 如果工号不为空，说明这个工号被占用了，报错已存在，若没问题，继续执行后续操作
         if(d != null){
             throw new BusinessException("该工号已存在");

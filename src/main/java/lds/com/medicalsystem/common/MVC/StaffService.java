@@ -12,5 +12,5 @@ public interface StaffService {
     ResultVO<String> staffLogin(InnerLoginDTO innerLoginDTO);
     // 内部成员查看个人信息，传入登录的DTO和Token，Token用于控制权限，无权限任何服务接口都不能调用
     // 返回职工信息DTO
-    StaffInformationVO staffInfo(InnerLoginDTO innerLoginDTO, String token);
+    StaffInformationVO staffInfo(String staffId,String role);
 }

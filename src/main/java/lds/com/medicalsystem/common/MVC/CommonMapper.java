@@ -4,7 +4,6 @@ import lds.com.medicalsystem.staff.admin.entity.Admin;
 import lds.com.medicalsystem.staff.doctor.entity.Doctor;
 import lds.com.medicalsystem.staff.labTech.entity.LabTech;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
 
 // 抽离公共需要的sql查询方法，让医生业务、管理员业务、化验员业务的Mapper都继承它，实现方法复用
 public interface CommonMapper {

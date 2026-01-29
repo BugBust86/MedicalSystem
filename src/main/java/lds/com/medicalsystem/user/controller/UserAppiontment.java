@@ -9,4 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserAppiontment {
     // 预约选择医生的接口
 
+    // 选择体检化验项目的接口
+
 }

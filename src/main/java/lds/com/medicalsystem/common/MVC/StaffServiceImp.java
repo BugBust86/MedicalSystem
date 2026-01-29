@@ -12,7 +12,6 @@ import lds.com.medicalsystem.staff.doctor.entity.Doctor;
 import lds.com.medicalsystem.staff.doctor.mapper.DoctorMapper;
 import lds.com.medicalsystem.staff.labTech.entity.LabTech;
 import lds.com.medicalsystem.staff.labTech.mapper.LabTechMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -94,7 +93,9 @@ public class StaffServiceImp implements StaffService {
                     return ResultVO.error("工号或密码错误");
                 }
                 Map<String,Object> information1 = new HashMap<>();
+                // 工号为token第二部分的有效信息，即该token解析得：“工号：xxx”
                 information1.put("工号",dto.getStaffId());
+                information1.put("role",dto.getRole());
                 String token1 = JWTUtil.genToke(information1);
                 return ResultVO.success("登录成功",token1);
             case "化验员":
@@ -111,6 +112,7 @@ public class StaffServiceImp implements StaffService {
                 }
                 Map<String,Object> information2 = new HashMap<>();
                 information2.put("工号",dto.getStaffId());
+                information2.put("role",dto.getRole());
                 String token2 = JWTUtil.genToke(information2);
                 return ResultVO.success("登录成功",token2);
             case "管理员":
@@ -123,6 +125,7 @@ public class StaffServiceImp implements StaffService {
                 }
                 Map<String,Object> information3 = new HashMap<>();
                 information3.put("工号",dto.getStaffId());
+                information3.put("role",dto.getRole());
                 String token3 = JWTUtil.genToke(information3);
                 return ResultVO.success("登录成功",token3);
         }
@@ -130,7 +133,38 @@ public class StaffServiceImp implements StaffService {
     }
     // 查看个人中心
     @Override
-    public StaffInformationVO staffInfo(InnerLoginDTO innerLoginDTO, String token) {
-        return null;
+    public StaffInformationVO staffInfo(String staffId,String role) {
+        StaffInformationVO VO = new StaffInformationVO();
+        switch (role){
+            case "医生":
+                Doctor doctor = doctorMapper.selectDoctorByNo(staffId);
+                VO.setPic(doctor.getDoctorPic());
+                VO.setStaffId(doctor.getDoctorNo());
+                VO.setName(doctor.getDoctorName());
+                VO.setPhone(doctor.getPhone());
+                VO.setEmail(doctor.getEmail());
+                VO.setTitle(doctor.getTitle());
+                VO.setRole(doctor.getRole());
+                return VO;
+            case "管理员":
+                Admin admin = adminMapper.selectAdminByNo(staffId);
+                VO.setPic(admin.getAdminPic());
+                VO.setStaffId(admin.getAdminNo());
+                VO.setName(admin.getAdminName());
+                VO.setPhone(admin.getPhone());
+                VO.setEmail(admin.getEmail());
+                VO.setRole(admin.getRole());
+                return VO;
+            case "化验员":
+                LabTech labTech = labTechMapper.selectLabTechByNo(staffId);
+                VO.setPic(labTech.getLabPic());
+                VO.setStaffId(labTech.getLabNo());
+                VO.setName(labTech.getLabName());
+                VO.setPhone(labTech.getPhone());
+                VO.setEmail(labTech.getEmail());
+                VO.setRole(labTech.getRole());
+                return VO;
+        }
+        throw new BusinessException("非法角色");
     }
 }

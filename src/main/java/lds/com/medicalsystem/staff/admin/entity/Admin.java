@@ -12,6 +12,7 @@ public class Admin {
     private String password;
     private String phone;
     private String email;
+    private String role;
     private String createTime;
     private String updateTime;
     // 管理员头像

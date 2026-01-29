@@ -15,7 +15,7 @@ public class MedicalCard {
     @NotBlank
     private String patientName;
     @NotBlank
-    @ValidIdCard
+    @ValidIdCard    // 传参的时候完成校验，减少服务层代码
     // 身份证号
     private String idNumber;
     // 设为枚举类，1为男，0为女，数据库存int，前端收到1渲染成男，2渲染成女
