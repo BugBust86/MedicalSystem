@@ -2,7 +2,7 @@ package lds.com.medicalsystem.user.controller;
 
 import jakarta.validation.constraints.Pattern;
 import lds.com.medicalsystem.common.VO.ResultVO;
-import lds.com.medicalsystem.common.utils.ThreadLocalUtil;
+import lds.com.medicalsystem.common.utils.config.ThreadLocalUtil;
 import lds.com.medicalsystem.user.VO.UserInfoVO;
 import lds.com.medicalsystem.user.entity.MedicalCard;
 import lds.com.medicalsystem.user.service.UserService;

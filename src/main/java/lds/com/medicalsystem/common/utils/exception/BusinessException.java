@@ -1,4 +1,4 @@
-package lds.com.medicalsystem.common.exception;
+package lds.com.medicalsystem.common.utils.exception;
 
 // 业务逻辑异常，用于new BusinessException("错误信息")手动抛出
 public class BusinessException extends RuntimeException{

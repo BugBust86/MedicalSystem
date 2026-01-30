@@ -1,4 +1,4 @@
-package lds.com.medicalsystem.common.utils;
+package lds.com.medicalsystem.common.utils.config;
 
 // 提供的set方法供拦截器使用，get方法供除登录注册外的所有接口使用，可获取登录token中的有效信息
 public class ThreadLocalUtil {

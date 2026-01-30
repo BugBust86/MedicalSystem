@@ -1,9 +1,9 @@
 package lds.com.medicalsystem.user.service;
 
 import lds.com.medicalsystem.common.VO.ResultVO;
-import lds.com.medicalsystem.common.exception.BusinessException;
-import lds.com.medicalsystem.common.utils.JWTUtil;
-import lds.com.medicalsystem.common.utils.ThreadLocalUtil;
+import lds.com.medicalsystem.common.utils.exception.BusinessException;
+import lds.com.medicalsystem.common.utils.config.JWTUtil;
+import lds.com.medicalsystem.common.utils.config.ThreadLocalUtil;
 import lds.com.medicalsystem.user.VO.UserInfoVO;
 import lds.com.medicalsystem.user.entity.MedicalCard;
 import lds.com.medicalsystem.user.entity.User;

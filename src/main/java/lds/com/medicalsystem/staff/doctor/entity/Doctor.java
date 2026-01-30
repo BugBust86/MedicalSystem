@@ -15,6 +15,8 @@ public class Doctor {
     private DoctorTitle title;
     private String phone;
     private String email;
+    // 擅长
+    private String specialty;
     // 科室
     private String department;
     private String CreateTime;

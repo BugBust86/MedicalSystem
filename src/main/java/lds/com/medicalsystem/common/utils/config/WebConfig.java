@@ -1,6 +1,5 @@
-package lds.com.medicalsystem.common.config;
+package lds.com.medicalsystem.common.utils.config;
 
-import lds.com.medicalsystem.common.interceptors.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

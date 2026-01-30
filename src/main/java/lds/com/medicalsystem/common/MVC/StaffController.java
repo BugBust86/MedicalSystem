@@ -3,7 +3,8 @@ package lds.com.medicalsystem.common.MVC;
 import lds.com.medicalsystem.common.DTO.InnerLoginDTO;
 import lds.com.medicalsystem.common.DTO.InnerRegisterDTO;
 import lds.com.medicalsystem.common.VO.ResultVO;
-import lds.com.medicalsystem.common.utils.ThreadLocalUtil;
+import lds.com.medicalsystem.common.VO.StaffInformationVO;
+import lds.com.medicalsystem.common.utils.config.ThreadLocalUtil;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,12 +35,13 @@ public class StaffController {
 
     // 员工查看个人中心
     @GetMapping("/staffInfo")
-    public ResultVO staffInfo(){
+    public ResultVO<StaffInformationVO> staffInfo(){
         // 请求头传入token，先在拦截器解析，成功后
         // 通过ThreadUtil的get获取工号和role（因为是通过工号和role登录的）
         Map<String,Object> map = ThreadLocalUtil.get();
         String staffId = (String)map.get("工号");
         String role = (String)map.get("role");
-        staffService.staffInfo(staffId,role);
+        StaffInformationVO vo = staffService.staffInfo(staffId, role);
+        return ResultVO.success(vo);
     }
 }

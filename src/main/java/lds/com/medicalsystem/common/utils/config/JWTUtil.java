@@ -1,4 +1,4 @@
-package lds.com.medicalsystem.common.utils;
+package lds.com.medicalsystem.common.utils.config;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

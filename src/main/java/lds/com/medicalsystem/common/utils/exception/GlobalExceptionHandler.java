@@ -1,4 +1,4 @@
-package lds.com.medicalsystem.common.exception;
+package lds.com.medicalsystem.common.utils.exception;
 
 import lds.com.medicalsystem.common.VO.ResultVO;
 import lombok.extern.slf4j.Slf4j;

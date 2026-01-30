@@ -4,8 +4,8 @@ import lds.com.medicalsystem.common.DTO.InnerLoginDTO;
 import lds.com.medicalsystem.common.DTO.InnerRegisterDTO;
 import lds.com.medicalsystem.common.VO.ResultVO;
 import lds.com.medicalsystem.common.VO.StaffInformationVO;
-import lds.com.medicalsystem.common.exception.BusinessException;
-import lds.com.medicalsystem.common.utils.JWTUtil;
+import lds.com.medicalsystem.common.utils.exception.BusinessException;
+import lds.com.medicalsystem.common.utils.config.JWTUtil;
 import lds.com.medicalsystem.staff.admin.entity.Admin;
 import lds.com.medicalsystem.staff.admin.mapper.AdminMapper;
 import lds.com.medicalsystem.staff.doctor.entity.Doctor;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 @Service
 public class StaffServiceImp implements StaffService {
@@ -143,7 +142,8 @@ public class StaffServiceImp implements StaffService {
                 VO.setName(doctor.getDoctorName());
                 VO.setPhone(doctor.getPhone());
                 VO.setEmail(doctor.getEmail());
-                VO.setTitle(doctor.getTitle());
+                VO.setSpecialty(doctor.getSpecialty());     //
+                VO.setTitle(doctor.getTitle());     //
                 VO.setRole(doctor.getRole());
                 return VO;
             case "管理员":
