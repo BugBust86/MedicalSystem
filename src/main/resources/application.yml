@@ -22,6 +22,10 @@ spring:
 
 
 mybatis:
+  # 配置 Mapper XML 文件的位置,从resource文件夹下开始找
+  mapper-locations: classpath:mapper/**/*.xml
+  # 自定义返回值类型的类型所在的包
+  type-aliases-package:
   configuration:
     # log-impl: org.apache.ibatis.logging.stdout.StdOutImpl 指定 MyBatis 把日志输出到控制台，但不会自动打印 SQL 执行的详细耗时和返回行数。
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl

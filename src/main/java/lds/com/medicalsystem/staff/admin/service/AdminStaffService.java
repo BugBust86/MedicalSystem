@@ -7,7 +7,7 @@ import lds.com.medicalsystem.staff.admin.VO.LabTechListVO;
 
 import java.util.List;
 
-public interface AdminService {
+public interface AdminStaffService {
     // 管理员注册医生
     void doctorRegisterByAdmin(AdminRegisterDoctorDTO dto);
     // 管理员注册化验员

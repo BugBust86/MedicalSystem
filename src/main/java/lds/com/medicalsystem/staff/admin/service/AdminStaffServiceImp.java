@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class AdminServiceImp implements AdminService{
+public class AdminStaffServiceImp implements AdminStaffService {
     // 全局唯一的单例adminMapper（常量）
     private final AdminMapper adminMapper;
     // 将单例adminMapper注入该服务bean中（依赖注入）
-    public AdminServiceImp(AdminMapper adminMapper) {
+    public AdminStaffServiceImp(AdminMapper adminMapper) {
         this.adminMapper = adminMapper;
     }
 
@@ -33,6 +33,7 @@ public class AdminServiceImp implements AdminService{
             throw new BusinessException("该工号已存在");
         }
         try {
+            dto.setDeptId(adminMapper.findDeptIdByName(dto.getDeptName()));
             int i = adminMapper.insertDoctor (dto);
             if (i == 0) {
                 // 抛异常时，补充更具体的业务信息

@@ -16,6 +16,8 @@ public class StaffInformationVO {
     private String phone;
     // 前端显示邮箱
     private String email;
+    // 医生显示科室名，其他为空
+    private String deptName;
     // 医生显示擅长，其他角色为空
     private String specialty;
     // 职称，管理员和化验员没有设为null，返回给前端的时候前端代码不处理这一条即可

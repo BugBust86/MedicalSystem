@@ -142,6 +142,7 @@ public class StaffServiceImp implements StaffService {
                 VO.setName(doctor.getDoctorName());
                 VO.setPhone(doctor.getPhone());
                 VO.setEmail(doctor.getEmail());
+                VO.setDeptName(doctorMapper.getDeptName(staffId));   //
                 VO.setSpecialty(doctor.getSpecialty());     //
                 VO.setTitle(doctor.getTitle());     //
                 VO.setRole(doctor.getRole());

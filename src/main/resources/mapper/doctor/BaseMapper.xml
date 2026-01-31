@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 必须和你的 Mapper 接口全类名一致 -->
+<mapper namespace="lds.com.medicalsystem.staff.doctor.mapper.BaseMapper">
+
+    <!-- id 必须和接口中的方法名一致，resultType 是返回值类型 -->
+    <select id="getDeptName" resultType="java.lang.String">
+        SELECT d.dept_name
+        FROM doctor doc
+                 INNER JOIN dept d ON doc.dept_id = d.dept_id
+        WHERE doc.doctor_no = #{doctorNo}
+    </select>
+
+</mapper>
