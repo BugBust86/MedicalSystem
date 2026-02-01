@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 必须和你的 Mapper 接口全类名一致 -->
+<mapper namespace="lds.com.medicalsystem.staff.admin.mapper.AdminArrangeMapper">
+    <!-- id 必须和接口中的方法名一致，resultType 是返回值类型 -->
+    <select id="searchWorkListByCondition"
+            parameterType="lds.com.medicalsystem.staff.admin.DTO.SearchTableDTO"
+            resultType="lds.com.medicalsystem.staff.admin.VO.WorkListVO">
+        SELECT
+            w.work_date,
+            w.work_time,
+            w.doctor_no,
+            doc.doctor_name,
+            dept.dept_name
+        FROM
+        work_table w
+            INNER JOIN doctor doc ON w.doctor_no = doc.doctor_no
+            INNER JOIN dept ON doc.dept_id = dept.dept_id
+            INNER JOIN dept_sort ds ON ds.dept_sort_id = dept.dept_sort_id
+        <where>
+            <if test="deptName != null and deptName != ''">
+                AND dept.dept_name = #{deptName}
+            </if>
+            <if test="deptSort != null and deptSort != ''">
+                AND ds.dept_sort_name = #{deptSort}
+            </if>
+        </where>
+        <if test="page != null and pageSize != null">
+            LIMIT #{(page - 1) * pageSize}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="countWorkListByCondition"
+            parameterType="lds.com.medicalsystem.staff.admin.DTO.SearchTableDTO"
+            resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM
+        work_table w
+            INNER JOIN doctor doc ON work_table.doctor_no = doc.doctor_no
+            INNER JOIN dept ON doc.dept_id = dept.dept_id
+            INNER JOIN dept_sort ds ON ds.dept_sort_id = dept.dept_sort_id
+        <where>
+            <if test="deptName != null and deptName != ''">
+                AND dept.dept_name = #{deptName}
+            </if>
+            <if test="deptSort != null and deptSort != ''">
+                AND ds.dept_sort_name = #{deptSort}
+            </if>
+        </where>
+    </select>
+
+    <select id="searchNoDNameByDocName" resultType="lds.com.medicalsystem.staff.admin.DTO.DocOtherInfoDTO">
+        select d.doctor_no, dept.dept_name
+            from doctor d inner join dept on d.dept_id = dept.dept_id
+        where d.doctor_name = #{docName}
+    </select>
+    <select id="docNameListInDept" resultType="java.lang.String">
+        select d.doctor_name
+        from doctor d inner join dept on d.dept_id = dept.dept_id
+        where dept.dept_name = #{deptName}
+    </select>
+    <select id="docNameListInDeptSort" resultType="java.lang.String">
+        select d.doctor_name
+        from doctor d inner join dept on d.dept_id = dept.dept_id
+            inner join dept_sort ds on dept.dept_sort_id = ds.dept_sort_id
+        where ds.dept_sort_name = #{deptSortName}
+    </select>
+
+</mapper>

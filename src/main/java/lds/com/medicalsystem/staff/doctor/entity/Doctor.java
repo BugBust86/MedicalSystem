@@ -18,7 +18,7 @@ public class Doctor {
     // 擅长
     private String specialty;
     // 科室
-    private int deptId;
+    private Integer deptId;
     private String CreateTime;
     private String UpdateTime;
     // 医生头像

@@ -5,6 +5,7 @@ import lds.com.medicalsystem.staff.admin.DTO.AdminRegisterDoctorDTO;
 import lds.com.medicalsystem.staff.admin.DTO.AdminRegisterLabDTO;
 import lds.com.medicalsystem.staff.admin.VO.DoctorListVO;
 import lds.com.medicalsystem.staff.admin.VO.LabTechListVO;
+import lds.com.medicalsystem.staff.admin.mapper.AdminDeptMapper;
 import lds.com.medicalsystem.staff.admin.mapper.AdminMapper;
 import lds.com.medicalsystem.staff.doctor.entity.Doctor;
 import lds.com.medicalsystem.staff.labTech.entity.LabTech;
@@ -18,22 +19,24 @@ import java.util.Map;
 public class AdminStaffServiceImp implements AdminStaffService {
     // 全局唯一的单例adminMapper（常量）
     private final AdminMapper adminMapper;
+    private final AdminDeptMapper adminDeptMapper;
     // 将单例adminMapper注入该服务bean中（依赖注入）
-    public AdminStaffServiceImp(AdminMapper adminMapper) {
+    public AdminStaffServiceImp(AdminMapper adminMapper, AdminDeptMapper adminDeptMapper) {
         this.adminMapper = adminMapper;
+        this.adminDeptMapper = adminDeptMapper;
     }
 
     //管理员注册医生
     @Override
     public void doctorRegisterByAdmin(AdminRegisterDoctorDTO dto) {
         // 先检查工号是否已存在
-        Doctor d = adminMapper.  selectDoctorByNo(dto.getDoctorNo());
+        Doctor d = adminMapper.selectDoctorByNo(dto.getDoctorNo());
         // 如果工号不为空，说明这个工号被占用了，报错已存在，若没问题，继续执行后续操作
         if(d != null){
             throw new BusinessException("该工号已存在");
         }
         try {
-            dto.setDeptId(adminMapper.findDeptIdByName(dto.getDeptName()));
+            dto.setDeptId(adminDeptMapper.findDeptIdByName(dto.getDeptName()));
             int i = adminMapper.insertDoctor (dto);
             if (i == 0) {
                 // 抛异常时，补充更具体的业务信息

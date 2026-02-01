@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- namespace 必须和你的 Mapper 接口全类名一致 -->
-<mapper namespace="lds.com.medicalsystem.staff.doctor.mapper.BaseMapper">
+<mapper namespace="lds.com.medicalsystem.staff.doctor.mapper.DocBaseMapper">
 
     <!-- id 必须和接口中的方法名一致，resultType 是返回值类型 -->
     <select id="getDeptName" resultType="java.lang.String">

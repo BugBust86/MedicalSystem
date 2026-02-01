@@ -17,7 +17,7 @@ public class AdminRegisterDoctorDTO {
     // 区别化验员，医生还有部门、职称字段
     @NotBlank
     private String deptName;
-    private int deptId;  //默认为空的字段，用于接收由deptName查询到的id
+    private Integer deptId;  //默认为空的字段，用于接收由deptName查询到的id
     @NotBlank
     private String title;
     // 有备无患，以防万一（在service层加入校验，如果role不是医生就报错）
