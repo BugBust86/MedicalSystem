@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 必须和你的 Mapper 接口全类名一致 -->
+<mapper namespace="lds.com.medicalsystem.staff.doctor.mapper.DoctorPrescriptionMapper">
+    <!-- 批量插入处方详情 -->
+    <insert id="batchInsertDetails">
+        INSERT INTO prescription_detail
+        (prescription_id, drug_name, dosage, frequency, usage, drug_remark, is_valid, create_time, update_time)
+        VALUES
+        <foreach collection="details" item="item" separator=",">
+            (
+            #{item.prescriptionId},
+            #{item.drugName},
+            #{item.dosage},
+            #{item.frequency},
+            #{item.usage},
+            #{item.drugRemark},
+        </foreach>
+    </insert>
+</mapper>
