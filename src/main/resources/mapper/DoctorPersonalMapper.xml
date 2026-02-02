@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 必须和你的 Mapper 接口全类名一致 -->
+<mapper namespace="lds.com.medicalsystem.staff.doctor.mapper.DoctorPersonalMapper">
+    <update id="update">
+        update doctor
+        <set>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="specialty != null and specialty != ''">
+                specialty = #{specialty},
+            </if>
+        </set>
+        where doctor_no = #{doctorNo}
+    </update>
+
+    <select id="searchDoctorWorkTable" resultType="lds.com.medicalsystem.staff.admin.VO.WorkListVO">
+        select wt.work_date,wt.work_time,d.doctor_no,dept.dept_name,wt.reserve_max,wt.reserved
+            from work_table wt
+            inner join doctor d on wt.doctor_no = d.doctor_no
+            inner join dept on d.dept_id = dept.dept_id
+        where d.doctor_no=#{doctorNo}
+    </select>
+    <select id="searchPatientNameList"
+            parameterType="lds.com.medicalsystem.staff.doctor.pojo.InfoDTO"
+            resultType="lds.com.medicalsystem.staff.doctor.pojo.PatientInfoDTO">
+        select mc.patient_name,mc.card_id from reservation r
+            inner join medical_cards mc on r.card_id = mc.card_id
+            inner join doctor d on r.doctor_name = d.doctor_name
+            inner join work_table on d.doctor_no = work_table.doctor_no
+        where work_date=#{workDate} and work_time=#{workTime} and d.doctor_no=#{doctorNo}
+    </select>
+</mapper>

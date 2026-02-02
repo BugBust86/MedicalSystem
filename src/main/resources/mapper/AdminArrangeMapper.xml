@@ -10,6 +10,7 @@
             parameterType="lds.com.medicalsystem.staff.admin.DTO.SearchTableDTO"
             resultType="lds.com.medicalsystem.staff.admin.VO.WorkListVO">
         SELECT
+            w.table_id,
             w.work_date,
             w.work_time,
             w.doctor_no,

@@ -19,6 +19,6 @@ public class PrescriptionDetail {
     private String frequency;
     // 用药方式，如口服、外用
     private String usage;
-    // 药品备注
+    // 备注
     private String drugRemark;
 }
