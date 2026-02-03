@@ -5,7 +5,7 @@ import lds.com.medicalsystem.staff.admin.DTO.AdminRegisterDoctorDTO;
 import lds.com.medicalsystem.staff.admin.DTO.AdminRegisterLabDTO;
 import lds.com.medicalsystem.staff.admin.VO.DoctorListVO;
 import lds.com.medicalsystem.staff.admin.VO.LabTechListVO;
-import lds.com.medicalsystem.staff.admin.VerifyUtil;
+import lds.com.medicalsystem.staff.VerifyUtil;
 import lds.com.medicalsystem.staff.admin.service.AdminStaffService;
 import org.springframework.web.bind.annotation.*;
 

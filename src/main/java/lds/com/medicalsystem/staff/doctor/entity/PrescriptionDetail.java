@@ -8,9 +8,9 @@ import lombok.Data;
 
 public class PrescriptionDetail {
     // 详情表主键
-    private String detailId;
+    private int detailId;
     // 外键，关联Prescription
-    private String prescriptionId;
+    private int prescriptionId;
     // 药品名称
     private String drugName;
     // 单次用量

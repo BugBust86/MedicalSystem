@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * 全局统一响应结果
+/**全局统一响应结果
  */
 @Data
 @AllArgsConstructor
@@ -43,6 +42,4 @@ public class ResultVO<T> {
     public static <T> ResultVO<T> error(String message) {
         return new ResultVO<>(1, message, null);
     }
-
-
 }

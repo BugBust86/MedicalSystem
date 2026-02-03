@@ -1,7 +1,8 @@
 package lds.com.medicalsystem.staff.admin.controller;
 
 import lds.com.medicalsystem.common.VO.ResultVO;
-import lds.com.medicalsystem.staff.admin.VerifyUtil;
+import lds.com.medicalsystem.common.utils.exception.BusinessException;
+import lds.com.medicalsystem.staff.VerifyUtil;
 import lds.com.medicalsystem.staff.admin.service.AdminDeptService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,19 +16,21 @@ public class AdminManageDeptController {
         this.adminDeptService = adminDeptService;
     }
 
-    // 管理员查看所有的科室分类（有原始数据，分类暂时不新增）
+    // 管理员查看所有的科室分类（有原始数据，分类暂时不新增）,用户也可
     @GetMapping("/findAllDeptSort")
     public ResultVO<List<String>> findAllDeptSort(){
-        VerifyUtil.adminVerify();
-        List<String> allDeptSort = adminDeptService.findAllDeptSort();
-        return ResultVO.success(allDeptSort);
+        if(VerifyUtil.adminVerify()||VerifyUtil.userVerify()) {
+            List<String> allDeptSort = adminDeptService.findAllDeptSort();
+            return ResultVO.success(allDeptSort);
+        } else throw new BusinessException("非法操作");
     }
-    // 管理员查看某个科室分类下的全部科室
+    // 管理员查看某个科室分类下的全部科室，用户也可
     @GetMapping("/findAllDept")
     public ResultVO<List<String>> findAllDeptNameBySortName(@RequestParam String deptSortName){
-        VerifyUtil.adminVerify();
-        List<String> allDeptName = adminDeptService.findAllDeptNameBySortName(deptSortName);
-        return ResultVO.success(allDeptName);
+        if(VerifyUtil.adminVerify()||VerifyUtil.userVerify()) {
+            List<String> allDeptName = adminDeptService.findAllDeptNameBySortName(deptSortName);
+            return ResultVO.success(allDeptName);
+        } else throw new BusinessException("非法操作");
     }
     // 管理员在某个分类下新增具体科室，输入科室代码和科室名
     @PostMapping("/addDept")

@@ -1,9 +1,9 @@
 package lds.com.medicalsystem.staff.doctor.service;
 
 import lds.com.medicalsystem.staff.admin.VO.WorkListVO;
-import lds.com.medicalsystem.staff.doctor.pojo.InfoDTO;
-import lds.com.medicalsystem.staff.doctor.pojo.PatientInfoDTO;
-import lds.com.medicalsystem.staff.doctor.pojo.PatientInfoVO;
+import lds.com.medicalsystem.staff.doctor.DTO.InfoDTO;
+import lds.com.medicalsystem.staff.doctor.DTO.PatientInfoDTO;
+import lds.com.medicalsystem.staff.doctor.VO.PatientInfoVO;
 
 import java.util.List;
 

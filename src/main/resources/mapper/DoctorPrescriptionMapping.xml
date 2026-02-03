@@ -8,7 +8,7 @@
     <!-- 批量插入处方详情 -->
     <insert id="batchInsertDetails">
         INSERT INTO prescription_detail
-        (prescription_id, drug_name, dosage, frequency, usage, drug_remark, is_valid, create_time, update_time)
+        (prescription_id, drug_name, dosage, frequency, usage, drug_remark)
         VALUES
         <foreach collection="details" item="item" separator=",">
             (
@@ -20,4 +20,9 @@
             #{item.drugRemark},
         </foreach>
     </insert>
+
+    <select id="getPNameListByDocNo"
+            resultType="lds.com.medicalsystem.staff.doctor.VO.PrescriptionVO">
+        select prescription_name,prescription_id from prescription where doctor_no = #{doctorNo}
+    </select>
 </mapper>

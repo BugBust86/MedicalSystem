@@ -2,9 +2,15 @@ package lds.com.medicalsystem.common.utils.exception;
 
 import lds.com.medicalsystem.common.VO.ResultVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 // Lombok的@Slf4j注解会在编译阶段自动为类生成日志对象的代码
@@ -31,6 +37,17 @@ public class GlobalExceptionHandler {
         String errorMsg = e.getBindingResult().getFieldError().getDefaultMessage();
         log.warn("参数校验失败: {}", errorMsg);
         return ResultVO.error("参数错误：" + errorMsg);
+    }
+
+    // 处理参数校验异常
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResultVO<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        List<String> errorMsgList = e.getBindingResult().getFieldErrors().stream()
+                .map(FieldError::getDefaultMessage)
+                .collect(Collectors.toList());
+        String errorMsg = String.join("；", errorMsgList);
+        return ResultVO.error(errorMsg);
     }
 
     // 兜底异常处理，防止异常被Tomcat中的全局处理器捕获，报500，服务器内部错误（Tomcat抛出的异常冗余繁琐，不利于定位原因）

@@ -1,4 +1,4 @@
-package lds.com.medicalsystem.staff.doctor.pojo;
+package lds.com.medicalsystem.staff.doctor.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lds.com.medicalsystem.staff.admin.entity.WorkTimeType;

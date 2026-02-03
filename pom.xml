@@ -24,7 +24,7 @@
         <!--spring web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
             <version>4.0.1</version>
         </dependency>
         <!--        MyBatis起步依赖-->

@@ -4,11 +4,11 @@ import jakarta.validation.constraints.Email;
 import lds.com.medicalsystem.common.VO.ResultVO;
 import lds.com.medicalsystem.common.utils.config.ThreadLocalUtil;
 import lds.com.medicalsystem.staff.admin.VO.WorkListVO;
-import lds.com.medicalsystem.staff.admin.VerifyUtil;
+import lds.com.medicalsystem.staff.VerifyUtil;
 import lds.com.medicalsystem.staff.doctor.mapper.DoctorPersonalMapper;
-import lds.com.medicalsystem.staff.doctor.pojo.InfoDTO;
-import lds.com.medicalsystem.staff.doctor.pojo.PatientInfoDTO;
-import lds.com.medicalsystem.staff.doctor.pojo.PatientInfoVO;
+import lds.com.medicalsystem.staff.doctor.DTO.InfoDTO;
+import lds.com.medicalsystem.staff.doctor.DTO.PatientInfoDTO;
+import lds.com.medicalsystem.staff.doctor.VO.PatientInfoVO;
 import lds.com.medicalsystem.staff.doctor.service.DoctorPersonalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/doctor")
@@ -69,7 +70,8 @@ public class DoctorPersonalController {
     public ResultVO<String> upload(MultipartFile file) throws IOException {
         // 把文件内容存入到本地磁盘中
         String originalFilename = file.getOriginalFilename();
-        file.transferTo(new File("D:\\files\\"+originalFilename));
+        String fileName = UUID.randomUUID().toString() + originalFilename.substring(originalFilename.lastIndexOf("."));
+        file.transferTo(new File("D:\\files\\"+fileName));
         dpm.updateURL("云服务器URL...");
         return ResultVO.success("云服务器URL...");
     }

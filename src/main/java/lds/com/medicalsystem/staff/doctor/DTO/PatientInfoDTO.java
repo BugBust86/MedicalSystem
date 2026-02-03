@@ -1,4 +1,4 @@
-package lds.com.medicalsystem.staff.doctor.pojo;
+package lds.com.medicalsystem.staff.doctor.DTO;
 
 import lombok.Data;
 

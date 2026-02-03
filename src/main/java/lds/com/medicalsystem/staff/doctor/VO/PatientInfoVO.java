@@ -1,4 +1,4 @@
-package lds.com.medicalsystem.staff.doctor.pojo;
+package lds.com.medicalsystem.staff.doctor.VO;
 
 import lds.com.medicalsystem.user.entity.GenderType;
 import lombok.Data;

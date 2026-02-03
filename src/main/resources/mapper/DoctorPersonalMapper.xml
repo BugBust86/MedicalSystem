@@ -26,8 +26,8 @@
         where d.doctor_no=#{doctorNo}
     </select>
     <select id="searchPatientNameList"
-            parameterType="lds.com.medicalsystem.staff.doctor.pojo.InfoDTO"
-            resultType="lds.com.medicalsystem.staff.doctor.pojo.PatientInfoDTO">
+            parameterType="lds.com.medicalsystem.staff.doctor.DTO.InfoDTO"
+            resultType="lds.com.medicalsystem.staff.doctor.DTO.PatientInfoDTO">
         select mc.patient_name,mc.card_id from reservation r
             inner join medical_cards mc on r.card_id = mc.card_id
             inner join doctor d on r.doctor_name = d.doctor_name
