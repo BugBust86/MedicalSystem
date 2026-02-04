@@ -31,23 +31,17 @@ public class GlobalExceptionHandler {
         return ResultVO.error (e.getMessage ());
     }
 
-    // 处理@Validated参数校验失败时抛出的异常
+    // 统一处理@Validated参数校验失败时抛出的异常
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResultVO<Void> handleValidationException(MethodArgumentNotValidException e){
-        String errorMsg = e.getBindingResult().getFieldError().getDefaultMessage();
-        log.warn("参数校验失败: {}", errorMsg);
-        return ResultVO.error("参数错误：" + errorMsg);
-    }
-
-    // 处理参数校验异常
-    @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResultVO<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        // 收集所有字段的错误信息（保留第二个方法的完整逻辑）
         List<String> errorMsgList = e.getBindingResult().getFieldErrors().stream()
                 .map(FieldError::getDefaultMessage)
                 .collect(Collectors.toList());
-        String errorMsg = String.join("；", errorMsgList);
-        return ResultVO.error(errorMsg);
+        String errorMsg = String.join("; ", errorMsgList);
+        log.warn("参数校验失败：{}", errorMsg);
+        return ResultVO.error("参数错误: " + errorMsg);
     }
 
     // 兜底异常处理，防止异常被Tomcat中的全局处理器捕获，报500，服务器内部错误（Tomcat抛出的异常冗余繁琐，不利于定位原因）

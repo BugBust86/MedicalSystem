@@ -2,12 +2,9 @@ package lds.com.medicalsystem.staff.labTech.mapper;
 
 import lds.com.medicalsystem.common.MVC.CommonMapper;
 import lds.com.medicalsystem.staff.labTech.PersonalDTO;
-import lds.com.medicalsystem.staff.labTech.entity.LabItem;
+import lds.com.medicalsystem.staff.labTech.entity.CheckItem;
 import lds.com.medicalsystem.staff.labTech.vo.LabItemSampleVO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -25,13 +22,23 @@ public interface LabTechMapper extends CommonMapper {
 
     // --------检查化验项目区域---------
     // 增加体检化验项目
-    @Insert("insert into lab_items (item_id, item_name, item_desc, item_place, start_time, end_time) " +
-            "values (#{item.itemName},#{item.itemDesc},#{item.itemPlace},#{item.startTime},#{item.endTime});")
-    int addCheckItem( @Param("item") LabItem item);
-    // 查询所有的检查化验项目，列表返回项目名+开始时间、结束时间
-    @Select("select item_name, start_time, end_time from lab_items;")
-    List<LabItemSampleVO> queryLabItemList();
-    // 根据项目名查询检查化验项目（不可能出现同名的项目，不方便用户理解查看）
-    @Select("select * from lab_items where item_name=#{labName};")
-    LabItem queryItemByName(String labName);
+    @Insert("insert into medical_db.check_items (item_id, item_name, item_desc, item_place, start_time, end_time,lab_no,reserve_max) " +
+            "values (#{item.itemName},#{item.itemDesc},#{item.itemPlace},#{item.startTime},#{item.endTime},#{item.labNo},#{item.reserveMax});")
+    int addCheckItem( @Param("item") CheckItem item);
+    // 删除检查化验项目，根据id（或者项目名），根据id删快一点
+    @Delete("delete from check_items where item_id=#{itemId};")
+    int deleteCheckItem(int itemId);
+    // 修改检查化验项目，根据id
+    @Update("update check_items set item_name=#{item.itemName}, item_desc=#{item.itemDesc}, item_place=#{item.itemPlace}" +
+            ", start_time=#{item.startTime}, end_time=#{item.endTime},reserve_max=#{item.reserveMax} where item_id=#{item.itemId};")
+    int updateCheckItem(CheckItem item);
+    // 查询某个化验员下所有的检查化验项目，列表返回id+项目名+开始时间、结束时间
+    @Select("select item_id, item_name, start_time, end_time from check_items where lab_no=#{labNo};")
+    List<LabItemSampleVO> queryLabItemList(String labNo);
+    // 根据项目id查询项目的全部内容（不可能出现同名的项目，不方便用户理解查看，但项目id查快点）
+    @Select("select * from medical_db.check_items where item_id=#{itemId};")
+    CheckItem queryItemById(int itemId);
+    // 修改item的活跃状态，改成1（发布，用户可查）
+    @Update("update check_items set is_active = 1 where item_id=#{itemId};")
+    int updateActiveStatus(int itemId);
 }

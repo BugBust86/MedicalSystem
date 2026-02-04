@@ -22,4 +22,18 @@ public class UserReserveServiceImp implements UserReserveService {
         // 再更新reserved
         userReserveMapper.updateReserved(dto);
     }
+
+    @Override
+    public void userReserveCheckItem(int itemId) {
+        int i = 0;
+        try {
+            i = userReserveMapper.updateCheckItemReserved(itemId);
+        } catch (Exception e) {
+            throw new RuntimeException("用户预约失败",e);
+        }
+        if(i!=1){
+            System.out.println(i);
+            throw new BusinessException("受影响的行数不为1，更新失败");
+        }
+    }
 }

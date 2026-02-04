@@ -7,7 +7,8 @@ import java.time.LocalDateTime;
 
 @Data
 public class LabItemSampleVO {
-    private String name;
+    private Integer itemId;
+    private String itemName;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 }

@@ -68,7 +68,8 @@ public class StaffServiceImp implements StaffService {
                 }
 
                 // 校验完成，可将 前端传入dto的工号、密码参数传进sql语句，执行修改
-                labTechMapper.labUpdate(dto.getStaffId(), dto.getPassword());
+                int i = labTechMapper.labUpdate(dto.getStaffId(), dto.getPassword());
+                if(i==0){throw new BusinessException("修改失败");}
                 break;
             case "管理员":
                 throw new IllegalArgumentException("无注册管理员账号权限，请联系后端工程师找回账号");

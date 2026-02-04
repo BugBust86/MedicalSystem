@@ -4,10 +4,7 @@ import lds.com.medicalsystem.common.VO.ResultVO;
 import lds.com.medicalsystem.user.DTO.UserReserveRequest;
 import lds.com.medicalsystem.user.service.UserReserveService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 // 用户的预约挂号模块
 @RestController
@@ -21,6 +18,10 @@ public class UserReserveController {
         userReserveService.userReserve(request);
         return ResultVO.success("预约成功");
     }
-    // 选择体检化验项目的接口
-
+    // 选择体检化验项目的接口,传入项目id，内部对check_items的reserved+1
+    @PatchMapping("/checkItem")
+    public ResultVO<Void> checkItem(int itemId){
+        userReserveService.userReserveCheckItem(itemId);
+        return ResultVO.success("用户预约检查化验项目成功");
+    }
 }

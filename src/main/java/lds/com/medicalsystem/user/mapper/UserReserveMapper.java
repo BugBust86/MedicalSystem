@@ -18,4 +18,7 @@ public interface UserReserveMapper {
     @Update("update work_table set reserved = reserved+1 where work_date=#{dto.reserveDate} " +
             "and work_time=#{dto.reserveTime} and doctor_no=#{dto.doctorNo};")
     void updateReserved(@Param("dto") UserReserveDTO dto);
+    // 对check_item表的reserved+1
+    @Update("update check_items set reserved = reserved+1 where item_id=#{itemId};")
+    int updateCheckItemReserved(int itemId);
 }
