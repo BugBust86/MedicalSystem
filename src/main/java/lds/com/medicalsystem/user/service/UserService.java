@@ -6,7 +6,7 @@ import lds.com.medicalsystem.user.entity.MedicalCard;
 
 public interface UserService {
     // 用户注册
-    void register(String phone, String password);
+    void register(String phone, String password, String userName);
     // 用户登录
     ResultVO<String> login(String name,String password);
     // 用户添加就诊卡

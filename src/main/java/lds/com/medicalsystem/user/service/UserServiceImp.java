@@ -20,14 +20,14 @@ public class UserServiceImp implements UserService{
         this.userMapper = userMapper;
     }
     @Override
-    public void register(String phone, String password) {
+    public void register(String phone, String password, String userName) {
         Boolean isTrue = userMapper.checkPhoneExists(phone);
         // 手机号存在返回true，if语句抛出已注册的异常
         if(isTrue){
             throw new BusinessException("该手机号已注册");
         }
         try {
-            int i = userMapper.userRegister(phone, password);
+            int i = userMapper.userRegister(phone, password, userName);
             if (i == 0){
                 throw new BusinessException("注册失败,无数据插入");
             }
@@ -69,12 +69,11 @@ public class UserServiceImp implements UserService{
     }
     @Override
     public UserInfoVO showUserInfo(String phone) {
-        // 通过手机号返回user对象
-        User user = userMapper.selectByPhone(phone);
-        UserInfoVO userInfoVO = new UserInfoVO();
-        userInfoVO.setUserName(user.getUserName());
-        userInfoVO.setPhone(user.getPhone());
-        return userInfoVO;
+        try {
+            return userMapper.selectByPhone(phone);
+        } catch (Exception e) {
+            throw new RuntimeException("sql查询异常"+e);
+        }
     }
 
     @Override

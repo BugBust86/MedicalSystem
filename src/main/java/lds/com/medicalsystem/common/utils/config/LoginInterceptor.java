@@ -14,8 +14,17 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle
             (HttpServletRequest request, HttpServletResponse response, Object handler){
+        // 关键：先放行 OPTIONS 预检请求
+        if ("OPTIONS".equals(request.getMethod())) {
+            return true;
+        }
+
         // 令牌验证，将请求头中名为Authorization的字符串记录起来
         String token = request.getHeader("Authorization");
+//        if (token == null || !token.startsWith("Bearer ")) {
+//            response.setStatus(401);
+//            return false;
+//        }
         try {
             // 验证Token,解析返回的是map集合，不需要校验集合到底对不对，
             // 因为如果与原来生成Token负载的对象不一样的话会抛异常，压根不会解析出来

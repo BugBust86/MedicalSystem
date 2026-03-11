@@ -68,28 +68,18 @@ public class AdminStaffServiceImp implements AdminStaffService {
     }
     @Override
     public List<DoctorListVO> selectDoctorList() {
-        List<Map<String, Object>> doctorMapList = adminMapper.selectDoctorList();
-        // 转换为VO对象
-        List<DoctorListVO> voList = new ArrayList<DoctorListVO>();
-        for (Map<String, Object> map : doctorMapList) {
-            DoctorListVO vo = new DoctorListVO();  //循环将map查询到的医生名和医生头像存入VO对象中，然后加进列表
-            vo.setDoctorName((String)map.get("doctorName"));
-            vo.setDoctorPic((String) map.get("doctorPic"));
-            voList.add(vo);
+        try {
+            return adminMapper.selectDoctorList();
+        } catch (Exception e) {
+            throw new RuntimeException("查询失败",e);
         }
-        return voList;
     }
     @Override
     public List<LabTechListVO> selectLabTechList() {
-        List<Map<String, Object>> labTechMapList = adminMapper.selectLabTechList();
-        // 转换为VO对象
-        List<LabTechListVO> voList = new ArrayList<LabTechListVO>();
-        for (Map<String, Object> map : labTechMapList) {
-            LabTechListVO vo = new LabTechListVO();  //循环将map查询到的医生名和医生头像存入VO对象中，然后加进列表
-            vo.setLabName((String)map.get("labTechName"));
-            vo.setLabPic((String) map.get("labTechPic"));
-            voList.add(vo);
+        try {
+            return adminMapper.selectLabTechList();
+        } catch (Exception e) {
+            throw new RuntimeException("查询失败",e);
         }
-        return voList;
     }
 }

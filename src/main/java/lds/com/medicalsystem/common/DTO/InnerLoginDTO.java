@@ -11,7 +11,7 @@ public class InnerLoginDTO {
     // 密码
     @NotBlank
     private String password;
-    // 职责，doctor、labTech、admin
+    // 职责，医生、化验员、管理员
     @NotBlank
     private String role;
 }

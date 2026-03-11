@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.util.Date;
 
+
 @Data
 public class InfoDTO {
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="GMT+8")

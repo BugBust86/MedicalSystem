@@ -4,12 +4,11 @@ package lds.com.medicalsystem.staff.admin.mapper;
 import lds.com.medicalsystem.common.MVC.CommonMapper;
 import lds.com.medicalsystem.staff.admin.DTO.AdminRegisterDoctorDTO;
 import lds.com.medicalsystem.staff.admin.DTO.AdminRegisterLabDTO;
-import lds.com.medicalsystem.staff.admin.DTO.SearchTableDTO;
-import lds.com.medicalsystem.staff.admin.VO.WorkListVO;
+import lds.com.medicalsystem.staff.admin.VO.DoctorListVO;
+import lds.com.medicalsystem.staff.admin.VO.LabTechListVO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
-import java.util.Map;
 
 
 public interface AdminMapper extends CommonMapper {
@@ -23,11 +22,12 @@ public interface AdminMapper extends CommonMapper {
     int insertLabTech(AdminRegisterLabDTO dto);
 
     // 查询医生表全部医生的姓名、头像
-    @Select("SELECT doctor_name AS doctorName, doctor_pic AS doctorPic FROM doctor")
-    List<Map<String,Object>> selectDoctorList();
+    @Select("select d.doctor_no,d.doctor_name,dept.dept_name,d.title,d.phone " +
+            "from doctor d inner join dept on d.dept_id = dept.dept_id")
+    List<DoctorListVO> selectDoctorList();
     // 查询化验员表全部化验员的姓名、头像
-    @Select("SELECT lab_name AS labTechName, lab_pic AS labTechPic FROM lab_tech")
-    List<Map<String, Object>> selectLabTechList();
+    @Select("SELECT lab_no, lab_name, phone FROM lab_tech")
+    List<LabTechListVO> selectLabTechList();
 
     // 传入工号，修改管理员账号的密码
     @Update("update admin set password=#{newPsw} where admin_no=#{adminNo}")

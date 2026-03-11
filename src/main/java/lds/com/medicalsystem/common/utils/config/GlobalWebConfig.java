@@ -1,17 +1,18 @@
 package lds.com.medicalsystem.common.utils.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
+// 全局统一的配置类，配置拦截器 和 跨域跨域配置
 @Configuration
-public class WebConfig implements WebMvcConfigurer {
+public class GlobalWebConfig implements WebMvcConfigurer {
     // 将拦截器注入配置类对象
     private final LoginInterceptor loginInterceptor;
-    public WebConfig(LoginInterceptor loginInterceptor) {
+    public GlobalWebConfig(LoginInterceptor loginInterceptor) {
         this.loginInterceptor = loginInterceptor;
     }
-
+    // 需要添加的拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 登录、注册接口不拦截，因为注册不需要Token，而登录的目的恰恰是为了获得Token
@@ -22,5 +23,15 @@ public class WebConfig implements WebMvcConfigurer {
                         "/user/login"
                         ,"/staff/registerBySelf",
                         "/staff/staffLogin");
+    }
+    // 全局跨域配置
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*") // 允许所有前端域名
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 允许的请求方法
+                .allowedHeaders("*") // 允许所有请求头（包括你加的 Authorization）
+                .allowCredentials(true) // 允许携带 Cookie
+                .maxAge(3600); // 预检请求的缓存时间（1小时，避免频繁发 OPTIONS）
     }
 }

@@ -10,7 +10,7 @@ public interface UserReserveMapper {
     // 根据医生名查医生工号
     @Select("select doctor_no from doctor where doctor_name=#{doctorName};")
     String selectIdByName(String doctorName);
-    // 查询reserve_empty的值
+    // 查询剩余可预约的人数，单表查询
     @Select("select reserve_empty from work_table where work_date=#{dto.reserveDate} " +
             "and work_time=#{dto.reserveTime} and doctor_no=#{dto.doctorNo};")
     int queryReserveEmpty(@Param("dto") UserReserveDTO dto);

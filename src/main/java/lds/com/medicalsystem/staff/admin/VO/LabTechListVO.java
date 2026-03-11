@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class LabTechListVO {
+    private String labNo;
     private String labName;
-    private String labPic;
+    private String phone;
 }
