@@ -8,7 +8,7 @@
     <!-- 批量插入处方详情 -->
     <insert id="batchInsertDetails">
         INSERT INTO prescription_detail
-        (prescription_id, drug_name, dosage, frequency, usage, drug_remark)
+        (prescription_id, drug_name, dosage, frequency, `usage`, drug_remark)
         VALUES
         <foreach collection="details" item="item" separator=",">
             (
@@ -17,7 +17,8 @@
             #{item.dosage},
             #{item.frequency},
             #{item.usage},
-            #{item.drugRemark},
+            #{item.drugRemark}
+            )
         </foreach>
     </insert>
 

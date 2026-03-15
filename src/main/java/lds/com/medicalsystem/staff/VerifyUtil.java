@@ -28,7 +28,7 @@ public class VerifyUtil {
         return true;
     }
     public static void doctorVerify(){
-        // 先校验token的role是否是管理员，否则报错
+        // 先校验token的role是否是医生，否则报错
         Map<String,Object> map = ThreadLocalUtil.get();
         String role = (String)map.get("role");
         if(!role.equals("医生")){

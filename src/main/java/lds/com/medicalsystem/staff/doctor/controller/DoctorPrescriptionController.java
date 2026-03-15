@@ -23,15 +23,16 @@ public class DoctorPrescriptionController {
     // 插入前端传来的医生填写的处方
     @PostMapping("/add")
     public ResultVO<Void> submitInsert(@Validated @RequestBody PrescriptionAddDTO addDTO) {
+
         // 将医生工号通过账号登录的Token提取值赋给addDTO中的DoctorId
-        addDTO.setDoctorId(DoctorTokenUtil.getDoctorNo());
+        addDTO.setDoctorNo(DoctorTokenUtil.getDoctorNo());
         dps.addPrescription(addDTO);
         return ResultVO.success("新增处方成功");
     }
     // 对前端传来的医生填写的处方部分修改（医生工号不修改）
     @PatchMapping("/update")
     public ResultVO<Void> submitUpdate(@Validated @RequestBody PrescriptionUpdateDTO updateDTO) {
-        updateDTO.setDoctorId(DoctorTokenUtil.getDoctorNo());
+        updateDTO.setDoctorNo(DoctorTokenUtil.getDoctorNo());
         dps.updatePrescription(updateDTO);
         return ResultVO.success("修改处方成功");
     }

@@ -14,9 +14,8 @@ public class PrescriptionAddDTO {
     // 处方主表信息
     @NotBlank(message = "处方名不能为空")
     private String prescriptionName; // 处方名
-    @NotBlank(message = "医生工号不能为空")
-    private String doctorId; // 医生ID（外键）
-    @NotBlank(message = "使用疾病不能为空")
+    private String doctorNo; // 医生ID（外键）
+    @NotBlank(message = "适用疾病不能为空")
     private String disease;
     private String prescriptionDesc; // 处方描述
 

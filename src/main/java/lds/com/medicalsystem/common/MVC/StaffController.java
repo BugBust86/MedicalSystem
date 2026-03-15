@@ -2,6 +2,7 @@ package lds.com.medicalsystem.common.MVC;
 
 import lds.com.medicalsystem.common.DTO.InnerLoginDTO;
 import lds.com.medicalsystem.common.DTO.InnerRegisterDTO;
+import lds.com.medicalsystem.common.DTO.UpdatePswDTO;
 import lds.com.medicalsystem.common.VO.ResultVO;
 import lds.com.medicalsystem.common.VO.StaffInformationVO;
 import lds.com.medicalsystem.common.utils.config.ThreadLocalUtil;
@@ -29,7 +30,7 @@ public class StaffController {
 
     // 员工登录自己已有账号
     @PostMapping("/staffLogin")
-    public ResultVO<String> staffLogin(@RequestBody InnerLoginDTO dto){
+    public ResultVO<Map<String, String>> staffLogin(@RequestBody InnerLoginDTO dto){
         return staffService.staffLogin(dto);
     }
 
@@ -43,5 +44,21 @@ public class StaffController {
         String role = (String)map.get("role");
         StaffInformationVO vo = staffService.staffInfo(staffId, role);
         return ResultVO.success(vo);
+    }
+
+    // 员工修改密码
+    @PostMapping("/updatePsw")
+    public ResultVO<Void> updateStaffPsw(UpdatePswDTO dto){
+        Map<String,Object> map = ThreadLocalUtil.get();
+        String role = (String) map.get("role");
+        String staffId = (String) map.get("工号");
+        dto.setRole(role);
+        dto.setStaffId(staffId);
+        try {
+            staffService.staffUpdatePsw(dto);
+            return ResultVO.success("修改成功");
+        } catch (Exception e) {
+            throw new RuntimeException("修改失败："+e);
+        }
     }
 }

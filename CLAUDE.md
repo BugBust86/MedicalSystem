@@ -32,7 +32,7 @@ mvn test -Dtest=JWTTest#testGenerateToken
 - **Credentials**: username: `root`, password: `123456`
 - **Initialize**: Run `medical_db.sql` to create tables and seed data
 
-Default admin account: `admin_no: A202200`, `password: 123456`
+Default admin account: `admin_no: A2022000`, `password: 123456`
 
 ## Architecture
 
@@ -83,8 +83,8 @@ src/main/java/lds/com/medicalsystem/
 | Path | Description |
 |------|-------------|
 | `/staff/*` | Staff login, registration |
-| `/admin/*` | Manage doctors, lab techs, departments, schedules |
 | `/doctor/*` | Doctor personal info, prescriptions |
+| `/admin/*` | Manage doctors, lab techs, departments, schedules |
 | `/labTech/*` | Lab technician check items |
 | `/user/*` | Patient registration, login, appointments |
 

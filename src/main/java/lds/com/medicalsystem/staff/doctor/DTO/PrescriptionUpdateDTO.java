@@ -2,14 +2,13 @@ package lds.com.medicalsystem.staff.doctor.DTO;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lds.com.medicalsystem.staff.doctor.entity.Prescription;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 public class PrescriptionUpdateDTO {
-    private String doctorId;
+    private String doctorNo;
     @NotNull(message = "处方ID不能为空")
     private int prescriptionId;
 

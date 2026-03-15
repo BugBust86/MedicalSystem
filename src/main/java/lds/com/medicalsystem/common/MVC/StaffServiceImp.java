@@ -2,6 +2,7 @@ package lds.com.medicalsystem.common.MVC;
 
 import lds.com.medicalsystem.common.DTO.InnerLoginDTO;
 import lds.com.medicalsystem.common.DTO.InnerRegisterDTO;
+import lds.com.medicalsystem.common.DTO.UpdatePswDTO;
 import lds.com.medicalsystem.common.VO.ResultVO;
 import lds.com.medicalsystem.common.VO.StaffInformationVO;
 import lds.com.medicalsystem.common.utils.exception.BusinessException;
@@ -33,7 +34,6 @@ public class StaffServiceImp implements StaffService {
     @Override
     public void staffRegisterBySelf(InnerRegisterDTO dto) {
         // 若有工具类先对传入controller层的密码加密，这里需要先进行解码
-
 
         switch (dto.getRole()) {
             case "医生":
@@ -77,7 +77,7 @@ public class StaffServiceImp implements StaffService {
     }
     // 员工登录
     @Override
-    public ResultVO<String> staffLogin(InnerLoginDTO dto) {
+    public ResultVO<Map<String, String>> staffLogin(InnerLoginDTO dto) {
         switch (dto.getRole()) {
             case "医生":
                 // 获取表中现有的该医生信息
@@ -97,7 +97,10 @@ public class StaffServiceImp implements StaffService {
                 information1.put("工号",dto.getStaffId());
                 information1.put("role",dto.getRole());
                 String token1 = JWTUtil.genToke(information1);
-                return ResultVO.success("登录成功",token1);
+                Map<String,String> returnInformation1 = new HashMap<>();
+                returnInformation1.put("token",token1);
+                returnInformation1.put("name",d.getDoctorName());
+                return ResultVO.success("登录成功",returnInformation1);
             case "化验员":
                 // 获取表中现有的该化验员信息，与前端传入的一一对比，对比姓名和绑定的手机号
                 LabTech labTech = labTechMapper.selectLabTechByNo(dto.getStaffId());
@@ -114,7 +117,10 @@ public class StaffServiceImp implements StaffService {
                 information2.put("工号",dto.getStaffId());
                 information2.put("role",dto.getRole());
                 String token2 = JWTUtil.genToke(information2);
-                return ResultVO.success("登录成功",token2);
+                Map<String,String> returnInformation2 = new HashMap<>();
+                returnInformation2.put("token",token2);
+                returnInformation2.put("name",labTech.getLabName());
+                return ResultVO.success("登录成功",returnInformation2);
             case "管理员":
                 Admin admin = adminMapper.selectAdminByNo(dto.getStaffId());
                 if(admin==null){
@@ -127,7 +133,10 @@ public class StaffServiceImp implements StaffService {
                 information3.put("工号",dto.getStaffId());
                 information3.put("role",dto.getRole());
                 String token3 = JWTUtil.genToke(information3);
-                return ResultVO.success("登录成功",token3);
+                Map<String,String> returnInformation3 = new HashMap<>();
+                returnInformation3.put("token",token3);
+                returnInformation3.put("name",admin.getAdminName());
+                return ResultVO.success("登录成功",returnInformation3);
         }
         return ResultVO.error("非法角色");
     }
@@ -168,5 +177,26 @@ public class StaffServiceImp implements StaffService {
                 return VO;
         }
         throw new BusinessException("非法角色");
+    }
+
+    @Override
+    public void staffUpdatePsw(UpdatePswDTO dto) {
+        switch (dto.getRole()){
+            case "医生":
+                Doctor d = doctorMapper.selectDoctorByNo(dto.getStaffId());
+                if( d.getPassword().equals(dto.getOldPsw()) ){
+                    doctorMapper.doctorUpdate(dto.getStaffId(), dto.getNewPsw());
+                } else throw new BusinessException("旧密码错误，请重新输入");
+            case "管理员":
+                Admin admin = adminMapper.selectAdminByNo(dto.getStaffId());
+                if( admin.getPassword().equals(dto.getOldPsw()) ){
+                    adminMapper.update(dto.getStaffId(), dto.getNewPsw());
+                } else throw new BusinessException("旧密码错误，请重新输入");
+            case "化验员":
+                LabTech labTech = labTechMapper.selectLabTechByNo(dto.getStaffId());
+                if( labTech.getPassword().equals(dto.getOldPsw()) ){
+                    labTechMapper.labUpdate(dto.getStaffId(),dto.getNewPsw());
+                } else throw new BusinessException("旧密码错误，请重新输入");
+        }
     }
 }

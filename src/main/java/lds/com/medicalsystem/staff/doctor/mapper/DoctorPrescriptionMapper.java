@@ -25,7 +25,7 @@ public interface DoctorPrescriptionMapper {
             "drug_name = #{drugName}, " +
             "dosage = #{dosage}, " +
             "frequency = #{frequency}, " +
-            "usage = #{usage}, " +
+            "`usage` = #{usage}, " +
             "drug_remark = #{drugRemark} " +
             "WHERE detail_id = #{detailId}")
     int updateDetail(PrescriptionDetail detail);

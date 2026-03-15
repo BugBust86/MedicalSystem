@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="lds.com.medicalsystem.staff.doctor.mapper.DoctorPatientMapper">
+    <select id="patientReserveByDocNo"
+            resultType="lds.com.medicalsystem.staff.doctor.VO.PatientReserveInfoVO">
+        select r.reserve_date,r.reserve_time,mc.patient_name,mc.gender,mc.contact_phone,mc.age,dept.dept_name,d.doctor_name
+        from reservation r
+                 inner join doctor d on d.doctor_no = r.doctor_no
+                 inner join medical_cards mc on mc.card_id = r.card_id
+                 inner join dept on d.dept_id = dept.dept_id
+        where d.doctor_no=#{doctorNo};
+    </select>
+</mapper>
