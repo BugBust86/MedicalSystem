@@ -16,6 +16,6 @@ public interface DoctorPrescriptionService {
     void deletePrescription(Integer prescriptionId);
     //根据ID查询处方（含详情）
     PrescriptionDetailVO getPrescriptionById(Integer prescriptionId);
-    // 根据医生工号显示全部处方名+处方id列表
+    // 根据医生工号显示全部 处方 列表
     List<PrescriptionVO> getPNameList();
 }

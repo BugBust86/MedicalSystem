@@ -140,7 +140,13 @@ public class DoctorPrescriptionServiceImp implements DoctorPrescriptionService{
     public List<PrescriptionVO> getPNameList() {
         try {
             String doctorNo = DoctorTokenUtil.getDoctorNo();
-            return dpm.getPNameListByDocNo(doctorNo);
+            List<PrescriptionVO> prescriptionList = dpm.getPNameListByDocNo(doctorNo);
+            // 为每个处方查询药品详情
+            for (PrescriptionVO prescriptionVO : prescriptionList) {
+                List<PrescriptionDetail> details = dpm.listByPrescriptionId(prescriptionVO.getPrescriptionId());
+                prescriptionVO.setPrescriptionDetails(details);
+            }
+            return prescriptionList;
         } catch (Exception e) {
             throw new RuntimeException("获取列表失败",e);
         }

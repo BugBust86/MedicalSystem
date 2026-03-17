@@ -100,6 +100,7 @@ public class StaffServiceImp implements StaffService {
                 Map<String,String> returnInformation1 = new HashMap<>();
                 returnInformation1.put("token",token1);
                 returnInformation1.put("name",d.getDoctorName());
+                returnInformation1.put("role",d.getRole());
                 return ResultVO.success("登录成功",returnInformation1);
             case "化验员":
                 // 获取表中现有的该化验员信息，与前端传入的一一对比，对比姓名和绑定的手机号
@@ -120,6 +121,7 @@ public class StaffServiceImp implements StaffService {
                 Map<String,String> returnInformation2 = new HashMap<>();
                 returnInformation2.put("token",token2);
                 returnInformation2.put("name",labTech.getLabName());
+                returnInformation2.put("role",labTech.getRole());
                 return ResultVO.success("登录成功",returnInformation2);
             case "管理员":
                 Admin admin = adminMapper.selectAdminByNo(dto.getStaffId());
@@ -136,6 +138,7 @@ public class StaffServiceImp implements StaffService {
                 Map<String,String> returnInformation3 = new HashMap<>();
                 returnInformation3.put("token",token3);
                 returnInformation3.put("name",admin.getAdminName());
+                returnInformation3.put("role",admin.getRole());
                 return ResultVO.success("登录成功",returnInformation3);
         }
         return ResultVO.error("非法角色");

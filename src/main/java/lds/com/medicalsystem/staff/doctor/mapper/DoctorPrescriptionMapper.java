@@ -52,3 +52,4 @@ public interface DoctorPrescriptionMapper {
     @Select("select prescription_id,prescription_name from prescription where doctor_no = #{doctorNo};")
     List<PrescriptionVO> getPrescriptionListByDocNo(String doctorNo);
 }
+

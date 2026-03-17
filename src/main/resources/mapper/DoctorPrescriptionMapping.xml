@@ -24,6 +24,13 @@
 
     <select id="getPNameListByDocNo"
             resultType="lds.com.medicalsystem.staff.doctor.VO.PrescriptionVO">
-        select prescription_name,prescription_id from prescription where doctor_no = #{doctorNo}
+        select
+            prescription_id as prescriptionId,
+            prescription_name as prescriptionName,
+            disease,
+            prescription_desc as prescriptionDesc,
+            create_time as createTime
+        from prescription
+        where doctor_no = #{doctorNo}
     </select>
 </mapper>

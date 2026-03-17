@@ -55,6 +55,7 @@ public class DoctorPersonalController {
         String doctorNo = (String) map.get("工号");
         // 获取文件后缀
         String originalFilename = file.getOriginalFilename();
+        // 文件名为随机的 UUID+.后面的后缀
         String fileName = UUID.randomUUID().toString() + originalFilename.substring(originalFilename.lastIndexOf("."));
 
         // 获取项目根目录下的 uploads 文件夹
@@ -66,9 +67,9 @@ public class DoctorPersonalController {
         // 保存文件
         file.transferTo(new File(uploadPath + fileName));
         // 生成可访问的 URL
-        String imageUrl = "/images/" + fileName;
+        String imageUrl = "http://localhost:8080/images/" + fileName;
         // 更新数据库中的头像 URL
         dpm.updateURL(doctorNo, imageUrl);
-        return ResultVO.success(imageUrl);
+        return ResultVO.success("上传头像成功",imageUrl);
     }
 }
