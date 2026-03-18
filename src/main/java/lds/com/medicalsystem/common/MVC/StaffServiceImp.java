@@ -189,17 +189,31 @@ public class StaffServiceImp implements StaffService {
                 Doctor d = doctorMapper.selectDoctorByNo(dto.getStaffId());
                 if( d.getPassword().equals(dto.getOldPsw()) ){
                     doctorMapper.doctorUpdate(dto.getStaffId(), dto.getNewPsw());
-                } else throw new BusinessException("旧密码错误，请重新输入");
+                } else {
+                    System.out.println(d.getPassword());
+                    System.out.println(dto.getOldPsw());
+                    System.out.println(dto.getNewPsw());
+                    throw new BusinessException("旧密码错误，请重新输入");
+                }
+                break;
             case "管理员":
                 Admin admin = adminMapper.selectAdminByNo(dto.getStaffId());
                 if( admin.getPassword().equals(dto.getOldPsw()) ){
                     adminMapper.update(dto.getStaffId(), dto.getNewPsw());
-                } else throw new BusinessException("旧密码错误，请重新输入");
+                } else {
+                    throw new BusinessException("旧密码错误，请重新输入");
+                }
+                break;
             case "化验员":
                 LabTech labTech = labTechMapper.selectLabTechByNo(dto.getStaffId());
                 if( labTech.getPassword().equals(dto.getOldPsw()) ){
                     labTechMapper.labUpdate(dto.getStaffId(),dto.getNewPsw());
-                } else throw new BusinessException("旧密码错误，请重新输入");
+                } else {
+                    throw new BusinessException("旧密码错误，请重新输入");
+                }
+                break;
+            default:
+                throw new BusinessException("非法角色，无法修改密码");
         }
     }
 }

@@ -7,4 +7,5 @@ public class LabTechListVO {
     private String labNo;
     private String labName;
     private String phone;
+    private String email;
 }

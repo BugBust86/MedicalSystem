@@ -10,4 +10,6 @@ public class DoctorListVO {
     private String deptName;
     private DoctorTitle title;
     private String phone;
+    private String email;
+    private String specialty;
 }

@@ -16,4 +16,13 @@ public interface AdminStaffService {
     List<DoctorListVO> selectDoctorList();
 
     List<LabTechListVO> selectLabTechList();
+
+    // 管理员根据工号删除医生
+    void deleteDoctorByNo(String doctorNo);
+
+    // 管理员根据工号删除化验员
+    void deleteLabTechByNo(String labNo);
+
+    // 管理员根据工号修改医生职称
+    void updateDoctorTitle(String doctorNo, String title);
 }

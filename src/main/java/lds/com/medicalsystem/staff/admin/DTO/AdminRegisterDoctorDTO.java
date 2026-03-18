@@ -9,8 +9,6 @@ public class AdminRegisterDoctorDTO {
     private String doctorNo;
     @NotBlank
     private String doctorName;
-    @NotBlank
-    private String pic;
     // 员工绑定的手机号，管理员指定
     @NotBlank
     private String phone;

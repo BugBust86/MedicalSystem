@@ -11,7 +11,7 @@ import tools.jackson.databind.node.StringNode;
 import java.util.List;
 
 public interface AdminArrangeService {
-    PageResultVO searchWorkList(SearchTableDTO dto);
+    PageResultVO searchWorkList(int page, int pageSize, String deptName, String doctorName);
 
     DocOtherInfoDTO searchOtherByDocName(String docName);
 

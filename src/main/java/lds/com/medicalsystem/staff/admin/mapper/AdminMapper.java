@@ -22,17 +22,28 @@ public interface AdminMapper extends CommonMapper {
     int insertLabTech(AdminRegisterLabDTO dto);
 
     // 查询医生表全部医生的姓名、头像
-    @Select("select d.doctor_no,d.doctor_name,dept.dept_name,d.title,d.phone " +
-            "from doctor d inner join dept on d.dept_id = dept.dept_id")
+    @Select("SELECT d.doctor_no AS doctorNo, d.doctor_name AS doctorName, dept.dept_name AS deptName, " +
+            "d.title, d.phone, d.email, d.specialty " +
+            "FROM doctor d INNER JOIN dept ON d.dept_id = dept.dept_id")
     List<DoctorListVO> selectDoctorList();
     // 查询化验员表全部化验员的姓名、头像
-    @Select("SELECT lab_no, lab_name, phone FROM lab_tech")
+    @Select("SELECT lab_no AS labNo, lab_name AS labName, phone, email FROM lab_tech")
     List<LabTechListVO> selectLabTechList();
 
     // 传入工号，修改管理员账号的密码
     @Update("update admin set password=#{newPsw} where admin_no=#{adminNo}")
     void update(@Param("adminNo") String adminNo,@Param("newPsw") String newPsw);
 
+    // 根据工号删除医生
+    @Delete("delete from doctor where doctor_no = #{doctorNo}")
+    int deleteDoctorByNo(String doctorNo);
 
+    // 根据工号删除化验员
+    @Delete("delete from lab_tech where lab_no = #{labNo}")
+    int deleteLabTechByNo(String labNo);
+
+    // 根据工号修改医生职称
+    @Update("update doctor set title = #{title} where doctor_no = #{doctorNo}")
+    int updateDoctorTitle(@Param("doctorNo") String doctorNo, @Param("title") String title);
 
 }

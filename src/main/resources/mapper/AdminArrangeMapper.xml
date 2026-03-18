@@ -14,23 +14,24 @@
             w.work_date,
             w.work_time,
             w.doctor_no,
+            w.reserve_max,
+            w.reserved,
             doc.doctor_name,
             dept.dept_name
         FROM
         work_table w
             INNER JOIN doctor doc ON w.doctor_no = doc.doctor_no
             INNER JOIN dept ON doc.dept_id = dept.dept_id
-            INNER JOIN dept_sort ds ON ds.dept_sort_id = dept.dept_sort_id
         <where>
             <if test="deptName != null and deptName != ''">
                 AND dept.dept_name = #{deptName}
             </if>
-            <if test="deptSort != null and deptSort != ''">
-                AND ds.dept_sort_name = #{deptSort}
+            <if test="doctorName != null and doctorName != ''">
+                AND doc.doctor_name = #{doctorName}
             </if>
         </where>
         <if test="page != null and pageSize != null">
-            LIMIT #{(page - 1) * pageSize}, #{pageSize}
+            LIMIT #{offset}, #{pageSize}
         </if>
     </select>
 
@@ -40,15 +41,14 @@
         SELECT COUNT(*)
         FROM
         work_table w
-            INNER JOIN doctor doc ON work_table.doctor_no = doc.doctor_no
+            INNER JOIN doctor doc ON w.doctor_no = doc.doctor_no
             INNER JOIN dept ON doc.dept_id = dept.dept_id
-            INNER JOIN dept_sort ds ON ds.dept_sort_id = dept.dept_sort_id
         <where>
             <if test="deptName != null and deptName != ''">
                 AND dept.dept_name = #{deptName}
             </if>
-            <if test="deptSort != null and deptSort != ''">
-                AND ds.dept_sort_name = #{deptSort}
+            <if test="doctorName != null and doctorName != ''">
+                AND doc.doctor_name = #{doctorName}
             </if>
         </where>
     </select>

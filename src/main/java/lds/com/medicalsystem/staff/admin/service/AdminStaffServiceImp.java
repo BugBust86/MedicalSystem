@@ -82,4 +82,43 @@ public class AdminStaffServiceImp implements AdminStaffService {
             throw new RuntimeException("查询失败",e);
         }
     }
+
+    // 管理员根据工号删除医生
+    @Override
+    public void deleteDoctorByNo(String doctorNo) {
+        Doctor doctor = adminMapper.selectDoctorByNo(doctorNo);
+        if (doctor == null) {
+            throw new BusinessException("医生工号不存在");
+        }
+        int result = adminMapper.deleteDoctorByNo(doctorNo);
+        if (result == 0) {
+            throw new BusinessException("删除医生失败");
+        }
+    }
+
+    // 管理员根据工号删除化验员
+    @Override
+    public void deleteLabTechByNo(String labNo) {
+        LabTech labTech = adminMapper.selectLabTechByNo(labNo);
+        if (labTech == null) {
+            throw new BusinessException("化验员工号不存在");
+        }
+        int result = adminMapper.deleteLabTechByNo(labNo);
+        if (result == 0) {
+            throw new BusinessException("删除化验员失败");
+        }
+    }
+
+    // 管理员根据工号修改医生职称
+    @Override
+    public void updateDoctorTitle(String doctorNo, String title) {
+        Doctor doctor = adminMapper.selectDoctorByNo(doctorNo);
+        if (doctor == null) {
+            throw new BusinessException("医生工号不存在");
+        }
+        int result = adminMapper.updateDoctorTitle(doctorNo, title);
+        if (result == 0) {
+            throw new BusinessException("修改职称失败");
+        }
+    }
 }

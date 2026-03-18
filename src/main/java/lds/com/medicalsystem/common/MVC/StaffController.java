@@ -48,7 +48,7 @@ public class StaffController {
 
     // 员工修改密码
     @PostMapping("/updatePsw")
-    public ResultVO<Void> updateStaffPsw(UpdatePswDTO dto){
+    public ResultVO<Void> updateStaffPsw(@RequestBody UpdatePswDTO dto){
         Map<String,Object> map = ThreadLocalUtil.get();
         String role = (String) map.get("role");
         String staffId = (String) map.get("工号");

@@ -35,25 +35,41 @@ public class AdminManageStaffController {
         adminStaffService.labTechRegisterByAdmin(dto);
         return ResultVO.success("注册成功");
     }
-    // 管理员查看所有医生，前端传role
+    // 管理员查看所有医生
     @GetMapping("/selectList/doctor")
-    public ResultVO<List<DoctorListVO>> selectDoctorList(@RequestParam String role) {
-        if (!role.equals("医生")) {
-            throw new BusinessException("不是医生");
-        }
+    public ResultVO<List<DoctorListVO>> selectDoctorList() {
         VerifyUtil.adminVerify();
         List<DoctorListVO> voList = adminStaffService.selectDoctorList();
         return ResultVO.success(voList);
     }
-    // 管理员查看所有化验员，前端传role
+    // 管理员查看所有化验员
     @GetMapping("/selectList/labTech")
-    public ResultVO<List<LabTechListVO>> selectLabTechList(@RequestParam String role) {
+    public ResultVO<List<LabTechListVO>> selectLabTechList() {
         VerifyUtil.adminVerify();
-        if(!role.equals("化验员")){
-            throw new BusinessException("不是化验员");
-        }
         List<LabTechListVO> voList = adminStaffService.selectLabTechList();
         return ResultVO.success(voList);
     }
-    // 管理员点击编辑，可查看医生的头像（不可修改）
+    // 管理员根据工号删除医生
+    @DeleteMapping("/delete/doctor/{doctorNo}")
+    public ResultVO<Void> deleteDoctorByNo(@PathVariable String doctorNo) {
+        VerifyUtil.adminVerify();
+        adminStaffService.deleteDoctorByNo(doctorNo);
+        return ResultVO.success("删除医生成功");
+    }
+
+    // 管理员根据工号删除化验员
+    @DeleteMapping("/delete/labTech/{labNo}")
+    public ResultVO<Void> deleteLabTechByNo(@PathVariable String labNo) {
+        VerifyUtil.adminVerify();
+        adminStaffService.deleteLabTechByNo(labNo);
+        return ResultVO.success("删除化验员成功");
+    }
+
+    // 管理员根据工号，修改医生的职称
+    @PutMapping("/update/doctorTitle")
+    public ResultVO<Void> updateDoctorTitle(@RequestParam String doctorNo, @RequestParam String title) {
+        VerifyUtil.adminVerify();
+        adminStaffService.updateDoctorTitle(doctorNo, title);
+        return ResultVO.success("修改医生职称成功");
+    }
 }

@@ -41,7 +41,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
             // 把业务数据存储到ThreadLocal对象中
             ThreadLocalUtil.set(claims);
-            logger.info("Token 解析成功，工号：{}", claims.get("工号"));
+            logger.info("ThreadLocal 完整数据：{}", claims);
             return true;
         } catch (Exception e) {
             logger.warn("Token 解析失败，请求路径：{}, 错误：{}", request.getRequestURI(), e.getMessage());
