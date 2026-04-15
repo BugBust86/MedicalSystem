@@ -18,6 +18,7 @@ public class AdminRegisterDoctorDTO {
     private Integer deptId;  //默认为空的字段，用于接收由deptName查询到的id
     @NotBlank
     private String title;
+    private String specialty;
     // 有备无患，以防万一（在service层加入校验，如果role不是医生就报错）
     @NotBlank
     private String role;

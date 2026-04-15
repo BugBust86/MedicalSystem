@@ -14,20 +14,20 @@ import java.util.List;
 public interface AdminMapper extends CommonMapper {
 
     // 插入医生信息，service层已做校验，故而这里不需要插入role，直接数据库默认”医生“
-    @Insert("insert into doctor(doctor_no, doctor_name, doctor_pic, dept_id, title)" +
-            " VALUES (#{doctorNo},#{doctorName},#{pic},#{deptId},#{title})")
+    @Insert("insert into doctor(doctor_no, doctor_name, dept_id, phone, role, title, specialty)" +
+            " VALUES (#{doctorNo},#{doctorName},#{deptId},#{phone},#{role},#{title},#{specialty})")
     int insertDoctor(AdminRegisterDoctorDTO dto);   // 返回受影响的行数
     // 插入化验员信息，service层已做校验，故而这里不需要插入role，直接数据库默认”化验员“
-    @Insert("insert into lab_tech(lab_no, lab_name, lab_pic) values(#{labNo},#{labName},#{pic})")
+    @Insert("insert into lab_tech(lab_no, lab_name, phone) values(#{labNo},#{labName},#{phone})")
     int insertLabTech(AdminRegisterLabDTO dto);
 
-    // 查询医生表全部医生的姓名、头像
+    // 查询医生表全部医生的信息
     @Select("SELECT d.doctor_no AS doctorNo, d.doctor_name AS doctorName, dept.dept_name AS deptName, " +
             "d.title, d.phone, d.email, d.specialty " +
-            "FROM doctor d INNER JOIN dept ON d.dept_id = dept.dept_id")
+            "FROM doctor d INNER JOIN dept ON d.dept_id = dept.dept_id ORDER BY d.doctor_no ASC")
     List<DoctorListVO> selectDoctorList();
     // 查询化验员表全部化验员的姓名、头像
-    @Select("SELECT lab_no AS labNo, lab_name AS labName, phone, email FROM lab_tech")
+    @Select("SELECT lab_no AS labNo, lab_name AS labName, phone, email FROM lab_tech l ORDER BY l.lab_no")
     List<LabTechListVO> selectLabTechList();
 
     // 传入工号，修改管理员账号的密码

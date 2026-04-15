@@ -34,18 +34,20 @@ public class LoginInterceptor implements HandlerInterceptor {
         try {
             // 解析时去掉 Bearer 前缀
             String actualToken = token.substring(7);  // 去掉 "Bearer "
-            logger.info("去掉头部的token：{}",actualToken);
-            // 验证Token,解析返回的是map集合，不需要校验集合到底对不对，
-            // 因为如果与原来生成Token负载的对象不一样的话会抛异常，压根不会解析出来
+            logger.info("去掉头部的 token：{}", actualToken);
+            // 验证 Token，解析返回的是 map 集合，不需要校验集合到底对不对，
+            // 因为如果与原来生成 Token 负载的对象不一样的话会抛异常，压根不会解析出来
             Map<String, Object> claims = JWTUtil.parseToken(actualToken);
-
-            // 把业务数据存储到ThreadLocal对象中
+            // 把业务数据存储到 ThreadLocal 对象中
             ThreadLocalUtil.set(claims);
             logger.info("ThreadLocal 完整数据：{}", claims);
             return true;
-        } catch (Exception e) {
-            logger.warn("Token 解析失败，请求路径：{}, 错误：{}", request.getRequestURI(), e.getMessage());
-            logger.debug("Token 解析详细异常：", e);
+        } catch (com.auth0.jwt.exceptions.TokenExpiredException e) {
+            logger.warn("Token 已过期，请求路径：{}", request.getRequestURI());
+            response.setStatus(401);
+            return false;
+        } catch (com.auth0.jwt.exceptions.SignatureVerificationException e) {
+            logger.warn("Token 签名验证失败，请求路径：{}", request.getRequestURI());
             response.setStatus(401);
             return false;
         }

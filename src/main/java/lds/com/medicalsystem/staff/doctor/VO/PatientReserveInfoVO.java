@@ -15,6 +15,12 @@ public class PatientReserveInfoVO {
     private Date reserveDate;
     // 具体时间段
     private WorkTimeType reserveTime;
+    // 就诊卡ID
+    private String cardId;
+    // 是否接诊
+    private int isReceive;
+    // 预约表id，返回给前端，医生在前端填写病历本的时候传递
+    private int reservationId;
     // 患者姓名
     private String patientName;
     // 患者性别

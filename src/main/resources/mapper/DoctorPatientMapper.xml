@@ -3,14 +3,30 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<!--查患者列表，返回基本信息和cardId、reservationId-->
 <mapper namespace="lds.com.medicalsystem.staff.doctor.mapper.DoctorPatientMapper">
     <select id="patientReserveByDocNo"
             resultType="lds.com.medicalsystem.staff.doctor.VO.PatientReserveInfoVO">
-        select r.reserve_date,r.reserve_time,mc.patient_name,mc.gender,mc.contact_phone,mc.age,dept.dept_name,d.doctor_name
+        select r.reservation_id, r.reserve_date,r.reserve_time,mc.card_id,mc.patient_name,
+               mc.gender,mc.contact_phone,mc.age,dept.dept_name,d.doctor_name
         from reservation r
                  inner join doctor d on d.doctor_no = r.doctor_no
                  inner join medical_cards mc on mc.card_id = r.card_id
                  inner join dept on d.dept_id = dept.dept_id
         where d.doctor_no=#{doctorNo};
     </select>
+
+    <!-- 插入病历记录 -->
+    <insert id="insertMedicalHistory" parameterType="lds.com.medicalsystem.staff.doctor.DTO.HistoryAddDTO"
+            useGeneratedKeys="true" keyProperty="historyId" keyColumn="history_id">
+        insert into medical_histories (medical_history, patient_description, doctor_advice, doctor_name, card_id, reservation_id)
+        values (#{medical_history}, #{patientDescription}, #{doctorAdvice}, #{doctorName}, #{cardId}, #{reservationId})
+    </insert>
+
+    <!-- 更新预约接诊状态为已接诊 -->
+    <update id="updateReservationReceived">
+        update reservation set is_receive = 1 where reservation_id = #{reservationId}
+    </update>
+
+
 </mapper>

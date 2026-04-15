@@ -78,8 +78,7 @@ http://localhost:8080
   "data": {
     "userId": 1,
     "userName": "张三",
-    "phone": "13800138000",
-    "...": "..."
+    "phone": "13800138000"
   }
 }
 ```
@@ -140,9 +139,9 @@ http://localhost:8080
 
 | 参数名 | 类型 | 必填 | 说明 |
 |--------|------|------|------|
+| doctorNo | string | 是 | 医生工号 |
 | reserveDate | date | 是 | 预约日期，格式 yyyy-MM-dd |
 | reserveTime | string | 是 | 预约时间段 (如: 上午/下午) |
-| doctorName | string | 是 | 医生姓名 |
 
 **响应示例**
 ```json
@@ -246,6 +245,27 @@ http://localhost:8080
 
 ---
 
+### 2.4 员工修改密码
+**POST** `/staff/updatePsw`
+
+- 需要请求头: `Token`
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| oldPsw | string | 是 | 旧密码 |
+| newPsw | string | 是 | 新密码 |
+
+**响应示例**
+```json
+{
+  "code": 0,
+  "message": "修改成功",
+  "data": null
+}
+```
+
+---
+
 ## 三、管理员模块 (Admin)
 
 ### 3.1 管理员注册医生账号
@@ -302,10 +322,6 @@ http://localhost:8080
 
 - 需要请求头: `Token` (管理员)
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| role | string | 是 | 固定传 "医生" |
-
 **响应示例**
 ```json
 {
@@ -317,7 +333,9 @@ http://localhost:8080
       "doctorName": "李医生",
       "title": "主任医师",
       "deptName": "内科",
-      "specialty": "心血管"
+      "specialty": "心血管",
+      "phone": "13800138000",
+      "email": "doctor@hospital.com"
     }
   ]
 }
@@ -330,10 +348,6 @@ http://localhost:8080
 
 - 需要请求头: `Token` (管理员)
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| role | string | 是 | 固定传 "化验员" |
-
 **响应示例**
 ```json
 {
@@ -343,6 +357,7 @@ http://localhost:8080
     {
       "labNo": "L2022001",
       "labName": "王化验员",
+      "phone": "13800138001",
       "email": "lab@hospital.com"
     }
   ]
@@ -351,7 +366,68 @@ http://localhost:8080
 
 ---
 
-### 3.5 查看所有科室分类
+### 3.5 删除医生
+**DELETE** `/admin/delete/doctor/{doctorNo}`
+
+- 需要请求头: `Token` (管理员)
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| doctorNo | path | 是 | 医生工号 |
+
+**响应示例**
+```json
+{
+  "code": 0,
+  "message": "删除医生成功",
+  "data": null
+}
+```
+
+---
+
+### 3.6 删除化验员
+**DELETE** `/admin/delete/labTech/{labNo}`
+
+- 需要请求头: `Token` (管理员)
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| labNo | path | 是 | 化验员工号 |
+
+**响应示例**
+```json
+{
+  "code": 0,
+  "message": "删除化验员成功",
+  "data": null
+}
+```
+
+---
+
+### 3.7 修改医生职称
+**PUT** `/admin/update/doctorTitle`
+
+- 需要请求头: `Token` (管理员)
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| doctorNo | string | 是 | 医生工号 |
+| title | string | 是 | 新职称 |
+
+**响应示例**
+```json
+{
+  "code": 0,
+  "message": "修改医生职称成功",
+  "data": null
+}
+```
+
+---
+
+### 3.8 查看所有科室分类
 **GET** `/admin/findAllDeptSort`
 
 - 需要请求头: `Token` (管理员或用户)
@@ -361,13 +437,16 @@ http://localhost:8080
 {
   "code": 0,
   "message": null,
-  "data": ["内科", "外科", "妇产科"]
+  "data": [
+    { "deptSortId": 1, "deptSortName": "内科" },
+    { "deptSortId": 2, "deptSortName": "外科" }
+  ]
 }
 ```
 
 ---
 
-### 3.6 查看某分类下的所有科室
+### 3.9 查看某分类下的所有科室
 **GET** `/admin/findAllDept`
 
 - 需要请求头: `Token` (管理员或用户)
@@ -381,13 +460,35 @@ http://localhost:8080
 {
   "code": 0,
   "message": null,
-  "data": ["心内科", "消化内科", "神经内科"]
+  "data": [
+    { "deptId": 1, "deptName": "心内科", "deptSortId": 1 },
+    { "deptId": 2, "deptName": "消化内科", "deptSortId": 1 }
+  ]
 }
 ```
 
 ---
 
-### 3.7 新增科室
+### 3.10 查看所有科室（不分分类）
+**GET** `/admin/findAllDeptNoSort`
+
+- 需要请求头: `Token` (管理员或用户)
+
+**响应示例**
+```json
+{
+  "code": 0,
+  "message": null,
+  "data": [
+    { "deptId": 1, "deptName": "心内科", "deptSortId": 1 },
+    { "deptId": 2, "deptName": "骨科", "deptSortId": 2 }
+  ]
+}
+```
+
+---
+
+### 3.11 新增科室
 **POST** `/admin/addDept`
 
 - 需要请求头: `Token` (管理员)
@@ -395,7 +496,7 @@ http://localhost:8080
 | 参数名 | 类型 | 必填 | 说明 |
 |--------|------|------|------|
 | deptName | string | 是 | 科室名称 |
-| deptSortName | string | 是 | 科室分类名 |
+| deptSortId | int | 是 | 科室分类ID |
 
 **响应示例**
 ```json
@@ -408,14 +509,14 @@ http://localhost:8080
 
 ---
 
-### 3.8 删除科室
+### 3.12 删除科室
 **DELETE** `/admin/deleteDept`
 
 - 需要请求头: `Token` (管理员)
 
 | 参数名 | 类型 | 必填 | 说明 |
 |--------|------|------|------|
-| deptName | string | 是 | 科室名称 |
+| deptId | int | 是 | 科室ID |
 
 **响应示例**
 ```json
@@ -428,80 +529,17 @@ http://localhost:8080
 
 ---
 
-### 3.9 获取某分类下的医生列表
-**GET** `/admin/docList/deptSort`
+### 3.13 查询值班列表（分页）
+**GET** `/admin/workList/search`
 
 - 需要请求头: `Token` (管理员)
 
 | 参数名 | 类型 | 必填 | 说明 |
 |--------|------|------|------|
-| deptSortName | string | 是 | 科室分类名 |
-
-**响应示例**
-```json
-{
-  "code": 0,
-  "message": null,
-  "data": ["李医生", "王医生", "赵医生"]
-}
-```
-
----
-
-### 3.10 获取某科室下的医生列表
-**GET** `/admin/docList/dept`
-
-- 需要请求头: `Token` (管理员)
-
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| deptName | string | 是 | 科室名称 |
-
-**响应示例**
-```json
-{
-  "code": 0,
-  "message": null,
-  "data": ["李医生", "王医生"]
-}
-```
-
----
-
-### 3.11 根据医生姓名查询工号和科室
-**GET** `/admin/findNoAndDept`
-
-- 需要请求头: `Token` (管理员)
-
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| docName | string | 是 | 医生姓名 |
-
-**响应示例**
-```json
-{
-  "code": 0,
-  "message": null,
-  "data": {
-    "doctorNo": "D2022001",
-    "deptName": "内科"
-  }
-}
-```
-
----
-
-### 3.12 查询值班列表（分页）
-**POST** `/admin/workList/search`
-
-- 需要请求头: `Token` (管理员)
-
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| pageNum | int | 是 | 页码 |
+| page | int | 是 | 页码 |
 | pageSize | int | 是 | 每页条数 |
-| deptSort | string | 否 | 科室分类 |
 | deptName | string | 否 | 科室名称 |
+| doctorName | string | 否 | 医生姓名 |
 
 **响应示例**
 ```json
@@ -528,7 +566,7 @@ http://localhost:8080
 
 ---
 
-### 3.13 新增值班信息
+### 3.14 新增值班信息
 **POST** `/admin/workList/insert`
 
 - 需要请求头: `Token` (管理员)
@@ -551,7 +589,7 @@ http://localhost:8080
 
 ---
 
-### 3.14 修改值班信息
+### 3.15 修改值班信息
 **PATCH** `/admin/workList/update`
 
 - 需要请求头: `Token` (管理员)
@@ -575,7 +613,7 @@ http://localhost:8080
 
 ---
 
-### 3.15 删除值班信息
+### 3.16 删除值班信息
 **DELETE** `/admin/workList/delete`
 
 - 需要请求头: `Token` (管理员)
@@ -590,6 +628,69 @@ http://localhost:8080
   "code": 0,
   "message": "删除值班信息成功",
   "data": null
+}
+```
+
+---
+
+### 3.17 获取某分类下的医生列表
+**GET** `/admin/docList/deptSort`
+
+- 需要请求头: `Token` (管理员)
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| deptSortName | string | 是 | 科室分类名 |
+
+**响应示例**
+```json
+{
+  "code": 0,
+  "message": null,
+  "data": ["李医生", "王医生", "赵医生"]
+}
+```
+
+---
+
+### 3.18 获取某科室下的医生列表
+**GET** `/admin/docList/dept`
+
+- 需要请求头: `Token` (管理员)
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| deptName | string | 是 | 科室名称 |
+
+**响应示例**
+```json
+{
+  "code": 0,
+  "message": null,
+  "data": ["李医生", "王医生"]
+}
+```
+
+---
+
+### 3.19 根据医生姓名查询工号和科室
+**GET** `/admin/findNoAndDept`
+
+- 需要请求头: `Token` (管理员)
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| docName | string | 是 | 医生姓名 |
+
+**响应示例**
+```json
+{
+  "code": 0,
+  "message": null,
+  "data": {
+    "doctorNo": "D2022001",
+    "deptName": "内科"
+  }
 }
 ```
 
@@ -623,15 +724,10 @@ http://localhost:8080
 
 ---
 
-### 4.2 查看患者列表
-**POST** `/doctor/patientList`
+### 4.2 查看预约患者列表
+**GET** `/doctor/patientReserve`
 
 - 需要请求头: `Token` (医生)
-
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| reserveDate | date | 是 | 值班日期 |
-| reserveTime | string | 是 | 时间段 |
 
 **响应示例**
 ```json
@@ -640,8 +736,11 @@ http://localhost:8080
   "message": null,
   "data": [
     {
+      "reservationId": 1,
       "cardId": 1,
       "cardName": "张三",
+      "reserveDate": "2026-03-15",
+      "reserveTime": "上午",
       "reserveState": "已就诊"
     }
   ]
@@ -650,34 +749,7 @@ http://localhost:8080
 
 ---
 
-### 4.3 查看患者详细信息
-**GET** `/doctor/getPatientInfo`
-
-- 需要请求头: `Token` (医生)
-
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| cardId | int | 是 | 就诊卡ID |
-
-**响应示例**
-```json
-{
-  "code": 0,
-  "message": null,
-  "data": {
-    "cardId": 1,
-    "cardName": "张三",
-    "gender": "男",
-    "idCard": "110101199001011234",
-    "birthday": "1990-01-01",
-    "phone": "13800138000"
-  }
-}
-```
-
----
-
-### 4.4 修改个人信息
+### 4.3 修改个人信息
 **PATCH** `/doctor/updateInfo`
 
 - 需要请求头: `Token` (医生)
@@ -686,6 +758,7 @@ http://localhost:8080
 |--------|------|------|------|
 | specialty | string | 是 | 擅长领域 |
 | email | string | 是 | 邮箱 |
+| phone | string | 是 | 手机号 |
 
 **响应示例**
 ```json
@@ -698,7 +771,7 @@ http://localhost:8080
 
 ---
 
-### 4.5 上传头像
+### 4.4 上传头像
 **POST** `/doctor/upload`
 
 - 需要请求头: `Token` (医生)
@@ -711,8 +784,8 @@ http://localhost:8080
 ```json
 {
   "code": 0,
-  "message": null,
-  "data": "云服务器URL..."
+  "message": "上传头像成功",
+  "data": "http://localhost:8080/images/xxx.jpg"
 }
 ```
 
@@ -731,6 +804,17 @@ http://localhost:8080
 | reservationId | int | 是 | 预约ID |
 | diagnosis | string | 是 | 诊断 |
 | prescriptionDetails | array | 是 | 处方详情列表 |
+
+**prescriptionDetails 数组项结构：**
+```json
+[
+  {
+    "medicineName": "阿莫西林",
+    "quantity": 1,
+    "usage": "口服"
+  }
+]
+```
 
 **响应示例**
 ```json
@@ -1001,3 +1085,11 @@ http://localhost:8080
 | 医生 | 可查看患者、填写处方 |
 | 化验员 | 可管理体检项目 |
 | 用户 | 可预约挂号、体检 |
+
+---
+
+## 更新日志
+
+| 日期 | 更新内容 |
+|------|----------|
+| 2026-03-18 | 初始版本，更新所有API接口文档 |
