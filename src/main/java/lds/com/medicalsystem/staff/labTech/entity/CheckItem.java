@@ -16,14 +16,12 @@ public class CheckItem {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime endTime;
     // 化验员发布后状态才为1，用户可查，默认为0
-    private boolean isActive=false;
+    private int isActive;
     // 外键，化验员工号
     private String labNo;
     // 设置可被预约的最大值
     private int reserveMax;
 
-    // 查看单个具体信息用的
     private int reserved;
     private int reserveEmpty;
-
 }

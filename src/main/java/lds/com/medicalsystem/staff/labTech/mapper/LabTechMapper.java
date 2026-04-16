@@ -25,18 +25,22 @@ public interface LabTechMapper extends CommonMapper {
     @Insert("insert into medical_db.check_items (item_name, item_desc, item_place, start_time, end_time,lab_no,reserve_max) " +
             "values (#{item.itemName},#{item.itemDesc},#{item.itemPlace},#{item.startTime},#{item.endTime},#{item.labNo},#{item.reserveMax});")
     int addCheckItem( @Param("item") CheckItem item);
-    // 删除检查化验项目，根据id（或者项目名），根据id删快一点
-    @Delete("delete from check_items where item_id=#{itemId};")
+    // 删除检查化验项目，逻辑删除
+    @Update("update check_items set is_delete = 1 where item_id=#{itemId};")
     int deleteCheckItem(int itemId);
     // 修改检查化验项目，根据id
     @Update("update check_items set item_name=#{item.itemName}, item_desc=#{item.itemDesc}, item_place=#{item.itemPlace}" +
             ", start_time=#{item.startTime}, end_time=#{item.endTime},reserve_max=#{item.reserveMax} where item_id=#{item.itemId};")
     int updateCheckItem(CheckItem item);
+
+    // 查询项目是否已发布
+    @Select("select is_active from check_items where item_id=#{itemId};")
+    int queryActiveStatus(int itemId);
     // 查询某个化验员下所有的检查化验项目，列表返回id+项目名+开始时间、结束时间
-    @Select("select item_id, item_name, start_time, end_time from check_items where lab_no=#{labNo};")
+    @Select("select item_id, item_name, start_time, end_time from check_items where lab_no=#{labNo} and is_delete = 0;")
     List<LabItemSampleVO> queryLabItemList(String labNo);
     // 根据项目id查询项目的全部内容（不可能出现同名的项目，不方便用户理解查看，但项目id查快点）
-    @Select("select * from medical_db.check_items where item_id=#{itemId};")
+    @Select("select * from check_items where item_id=#{itemId} and is_delete = 0;")
     CheckItem queryItemById(int itemId);
     // 修改item的活跃状态，改成1（发布，用户可查）
     @Update("update check_items set is_active = 1 where item_id=#{itemId};")

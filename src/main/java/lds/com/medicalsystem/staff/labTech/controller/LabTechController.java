@@ -26,7 +26,7 @@ public class LabTechController {
     }
     // 删除体检化验项目
     @DeleteMapping("/delete")
-    public ResultVO<Void> deleteCheckItem(int itemId) {
+    public ResultVO<Void> deleteCheckItem(@RequestParam Integer itemId) {
         try {
             labTechService.deleteLabItem(itemId);
         } catch (Exception e) {
@@ -52,13 +52,14 @@ public class LabTechController {
     }
     @GetMapping("/queryOne")
     // 根据项目id查询单个项目的全部内容
-    public ResultVO<CheckItem> queryOneCheckItem(int itemId) {
+    public ResultVO<CheckItem> queryOneCheckItem(@RequestParam Integer itemId) {
         CheckItem checkItem = labTechService.queryItemById(itemId);
         return ResultVO.success(checkItem);
     }
     @PatchMapping("/publish")
     // 化验员发布检查化验项目（用户可见）
-    public ResultVO<Void> updateActiveStatus(int itemId) {
+    public ResultVO<Void> updateActiveStatus(@RequestBody java.util.Map<String, Integer> params) {
+        Integer itemId = params.get("itemId");
         try {
             labTechService.updateActiveStatus(itemId);
         } catch (Exception e) {

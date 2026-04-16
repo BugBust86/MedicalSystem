@@ -32,6 +32,11 @@ public class LabTechServiceImp implements LabTechService{
 
     @Override
     public void updateLabItem(CheckItem item) {
+        // 检查是否已发布，已发布则不能修改
+        int isActive = labTechMapper.queryActiveStatus(item.getItemId());
+        if (isActive == 1) {
+            throw new BusinessException("该项目已发布，不能修改");
+        }
         int i = labTechMapper.updateCheckItem(item);
         if(i!=1){ throw new BusinessException("受影响的行数不为1，修改失败"); }
     }
