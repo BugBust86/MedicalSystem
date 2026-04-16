@@ -5,6 +5,8 @@ import lds.com.medicalsystem.common.utils.config.ThreadLocalUtil;
 import lds.com.medicalsystem.common.utils.exception.BusinessException;
 import lds.com.medicalsystem.staff.VerifyUtil;
 import lds.com.medicalsystem.staff.doctor.DTO.HistoryAddDTO;
+import lds.com.medicalsystem.staff.doctor.DTO.HistoryUpdateDTO;
+import lds.com.medicalsystem.staff.doctor.VO.MedicalHistoryDetailVO;
 import lds.com.medicalsystem.staff.doctor.VO.PatientReserveInfoVO;
 import lds.com.medicalsystem.staff.doctor.service.DoctorPatientService;
 import lds.com.medicalsystem.staff.doctor.utils.DoctorTokenUtil;
@@ -39,6 +41,24 @@ public class DoctorPatientController {
             throw new BusinessException("service执行异常"+e);
         }
         return ResultVO.success("填写成功");
+    }
+
+    // 查看病历本详情
+    @GetMapping("/medicalHistory/{reservationId}")
+    public ResultVO<MedicalHistoryDetailVO> getMedicalHistory(@PathVariable Integer reservationId){
+        // 必须是已接诊状态才能查看
+        MedicalHistoryDetailVO detail = doctorPatientService.getMedicalHistoryDetail(reservationId);
+        if (detail == null) {
+            throw new BusinessException("未找到病历记录或该患者未接诊");
+        }
+        return ResultVO.success(detail);
+    }
+
+    // 更新病历本
+    @PutMapping("/medicalHistory")
+    public ResultVO<String> updateMedicalHistory(@RequestBody HistoryUpdateDTO dto){
+        doctorPatientService.updateMedicalHistory(dto);
+        return ResultVO.success("更新成功");
     }
 
 }

@@ -22,7 +22,7 @@ public interface LabTechMapper extends CommonMapper {
 
     // --------检查化验项目区域---------
     // 增加体检化验项目
-    @Insert("insert into medical_db.check_items (item_id, item_name, item_desc, item_place, start_time, end_time,lab_no,reserve_max) " +
+    @Insert("insert into medical_db.check_items (item_name, item_desc, item_place, start_time, end_time,lab_no,reserve_max) " +
             "values (#{item.itemName},#{item.itemDesc},#{item.itemPlace},#{item.startTime},#{item.endTime},#{item.labNo},#{item.reserveMax});")
     int addCheckItem( @Param("item") CheckItem item);
     // 删除检查化验项目，根据id（或者项目名），根据id删快一点

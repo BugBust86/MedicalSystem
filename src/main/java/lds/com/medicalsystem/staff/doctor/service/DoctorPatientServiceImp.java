@@ -2,6 +2,8 @@ package lds.com.medicalsystem.staff.doctor.service;
 
 import lds.com.medicalsystem.common.utils.exception.BusinessException;
 import lds.com.medicalsystem.staff.doctor.DTO.HistoryAddDTO;
+import lds.com.medicalsystem.staff.doctor.DTO.HistoryUpdateDTO;
+import lds.com.medicalsystem.staff.doctor.VO.MedicalHistoryDetailVO;
 import lds.com.medicalsystem.staff.doctor.VO.PatientReserveInfoVO;
 import lds.com.medicalsystem.staff.doctor.mapper.DoctorPatientMapper;
 import lds.com.medicalsystem.staff.doctor.utils.DoctorTokenUtil;
@@ -29,6 +31,11 @@ public class DoctorPatientServiceImp implements DoctorPatientService{
     @Override
     @Transactional
     public void doctorWriteHistory(HistoryAddDTO dto) {
+        // 0. 检查该预约是否已接诊（病历是否已存在）
+        int exists = doctorPatientMapper.checkMedicalHistoryExists(dto.getReservationId(), dto.getCardId());
+        if (exists > 0) {
+            throw new BusinessException("该患者已接诊");
+        }
         // 1. 插入病历记录到medical_histories表
         int rows = doctorPatientMapper.insertMedicalHistory(dto);
         if (rows <= 0) {
@@ -36,5 +43,25 @@ public class DoctorPatientServiceImp implements DoctorPatientService{
         }
         // 2. 更新预约状态为已接诊
         doctorPatientMapper.updateReservationReceived(dto.getReservationId());
+    }
+
+    // 查看病历本详情
+    @Override
+    public MedicalHistoryDetailVO getMedicalHistoryDetail(Integer reservationId) {
+        return doctorPatientMapper.getMedicalHistoryDetail(reservationId);
+    }
+
+    // 更新病历本
+    @Override
+    public void updateMedicalHistory(HistoryUpdateDTO dto) {
+        // 检查病历是否存在
+        int exists = doctorPatientMapper.checkMedicalHistoryExistsByReservationId(dto.getReservationId());
+        if (exists <= 0) {
+            throw new BusinessException("该病历不存在或未接诊");
+        }
+        int rows = doctorPatientMapper.updateMedicalHistory(dto);
+        if (rows <= 0) {
+            throw new BusinessException("更新失败");
+        }
     }
 }

@@ -8,7 +8,8 @@
     <select id="patientReserveByDocNo"
             resultType="lds.com.medicalsystem.staff.doctor.VO.PatientReserveInfoVO">
         select r.reservation_id, r.reserve_date,r.reserve_time,mc.card_id,mc.patient_name,
-               mc.gender,mc.contact_phone,mc.age,dept.dept_name,d.doctor_name
+               mc.gender,mc.contact_phone,mc.age,dept.dept_name,d.doctor_name,
+               r.is_receive as isReceive
         from reservation r
                  inner join doctor d on d.doctor_no = r.doctor_no
                  inner join medical_cards mc on mc.card_id = r.card_id
@@ -26,6 +27,48 @@
     <!-- 更新预约接诊状态为已接诊 -->
     <update id="updateReservationReceived">
         update reservation set is_receive = 1 where reservation_id = #{reservationId}
+    </update>
+
+    <!-- 检查病历是否已存在 -->
+    <select id="checkMedicalHistoryExists" resultType="int">
+        select count(*) from medical_histories
+        where reservation_id = #{reservationId} and card_id = #{cardId}
+    </select>
+
+    <!-- 检查病历是否已存在（只根据reservationId） -->
+    <select id="checkMedicalHistoryExistsByReservationId" resultType="int">
+        select count(*) from medical_histories
+        where reservation_id = #{reservationId}
+    </select>
+
+    <!-- 查看病历本详情（is_receive=1才能查看） -->
+    <select id="getMedicalHistoryDetail" resultType="lds.com.medicalsystem.staff.doctor.VO.MedicalHistoryDetailVO">
+        select r.reserve_date as reserveDate,
+               r.reserve_time as reserveTime,
+               mc.patient_name as patientName,
+               mc.gender,
+               mc.age,
+               mc.contact_phone as contactPhone,
+               dept.dept_name as deptName,
+               d.doctor_name as doctorName,
+               mh.medical_history as medicalHistory,
+               mh.patient_description as patientDescription,
+               mh.doctor_advice as doctorAdvice
+        from medical_histories mh
+                 inner join reservation r on mh.reservation_id = r.reservation_id
+                 inner join medical_cards mc on mh.card_id = mc.card_id
+                 inner join doctor d on r.doctor_no = d.doctor_no
+                 inner join dept on d.dept_id = dept.dept_id
+        where r.is_receive = 1 and r.reservation_id = #{reservationId}
+    </select>
+
+    <!-- 更新病历本 -->
+    <update id="updateMedicalHistory">
+        update medical_histories
+        set medical_history = #{medicalHistory},
+            patient_description = #{patientDescription},
+            doctor_advice = #{doctorAdvice}
+        where reservation_id = #{reservationId}
     </update>
 
 
