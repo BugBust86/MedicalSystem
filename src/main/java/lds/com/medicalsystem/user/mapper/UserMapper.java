@@ -20,7 +20,7 @@ public interface UserMapper {
     Boolean checkPhoneExists(String phone);
     //通过手机号查id
     @Select("select user_id from users where phone=#{phone}")
-    String findIdByPhone(String phone);
+    int findIdByPhone(String phone);
     //用户注册
     @Insert("insert into users(phone, password, user_name) VALUES(#{phone},#{psw},#{userName}) ")
     int userRegister(@Param("phone") String phone, @Param("psw") String psw, @Param("userName") String userName); // @Param注解让Mybatis区分多个参数的对应关系

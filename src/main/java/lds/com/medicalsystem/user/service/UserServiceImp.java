@@ -47,7 +47,7 @@ public class UserServiceImp implements UserService{
             throw new BusinessException("手机号不存在，请先注册");
         }
         String psw = userMapper.userLoginSelect(phone);
-        String userId = userMapper.findIdByPhone(phone);
+        int userId = userMapper.findIdByPhone(phone);
         if(psw.equals(password)){
             Map<String,Object> claims = new HashMap<>();
             // 通过手机号、userId获得token
