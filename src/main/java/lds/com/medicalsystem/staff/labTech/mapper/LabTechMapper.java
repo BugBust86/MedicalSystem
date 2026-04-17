@@ -31,10 +31,10 @@ public interface LabTechMapper extends CommonMapper {
     // 修改检查化验项目，根据id
     @Update("update check_items set item_name=#{item.itemName}, item_desc=#{item.itemDesc}, item_place=#{item.itemPlace}" +
             ", start_time=#{item.startTime}, end_time=#{item.endTime},reserve_max=#{item.reserveMax} where item_id=#{item.itemId};")
-    int updateCheckItem(CheckItem item);
+    int updateCheckItem(@Param("item") CheckItem item);
 
     // 查询项目是否已发布
-    @Select("select is_active from check_items where item_id=#{itemId};")
+    @Select("select is_active from check_items where item_id=#{itemId} and is_delete = 0;")
     int queryActiveStatus(int itemId);
     // 查询某个化验员下所有的检查化验项目，列表返回id+项目名+开始时间、结束时间
     @Select("select item_id, item_name, start_time, end_time from check_items where lab_no=#{labNo} and is_delete = 0;")

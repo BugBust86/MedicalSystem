@@ -32,6 +32,11 @@ public class LabTechServiceImp implements LabTechService{
 
     @Override
     public void updateLabItem(CheckItem item) {
+        // 检查是否存在且未删除
+        CheckItem existItem = labTechMapper.queryItemById(item.getItemId());
+        if (existItem == null) {
+            throw new BusinessException("该项目不存在或已删除");
+        }
         // 检查是否已发布，已发布则不能修改
         int isActive = labTechMapper.queryActiveStatus(item.getItemId());
         if (isActive == 1) {
